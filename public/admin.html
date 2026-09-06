@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinderWoow - Admin Panel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#0B0F19',
+                        brandBlue: '#1E1B4B',
+                        brandPink: '#EC4899',
+                        brandYellow: '#F59E0B',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-brandDark text-white font-sans antialiased min-h-screen">
+
+    <!-- LOGIN CONTAINER -->
+    <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-[#1E1B4B] border border-white/10 p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6">
+            <div class="text-center space-y-2">
+                <h1 class="text-3xl font-black bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text text-transparent">KINDERWOOW</h1>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Admin Authorization</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-2">Password</label>
+                    <input type="password" id="adminPassword" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-pink-500 transition" placeholder="Enter admin password">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-yellow-500 font-bold py-3 rounded-xl shadow-lg hover:scale-[1.01] transition uppercase tracking-wider text-xs">
+                    Login
+                </button>
+            </form>
+            <div id="loginError" class="hidden text-xs text-rose-500 text-center font-bold">
+                Invalid password!
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN DASHBOARD (HIDDEN BY DEFAULT) -->
+    <div id="dashboardSection" class="hidden">
+        <!-- HEADER -->
+        <header class="bg-[#0B0F19]/90 border-b border-white/10 px-6 py-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md">
+            <div class="flex items-center gap-3">
+                <span class="text-xl font-black bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text text-transparent">KINDERWOOW</span>
+                <span class="bg-pink-500/20 text-pink-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border border-pink-500/30">Admin Panel</span>
+            </div>
+            <button onclick="logout()" class="text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition">
+                Logout <i class="fa-solid fa-right-from-bracket ml-1"></i>
+            </button>
+        </header>
+
+        <!-- DASHBOARD CONTENT -->
+        <main class="max-w-7xl mx-auto p-6 space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black">Booking Requests</h2>
+                    <p class="text-xs text-gray-400">Manage client requests submitted via website form.</p>
+                </div>
+                <button onclick="fetchBookings()" class="bg-pink-500 hover:bg-pink-600 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> Refresh Data
+                </button>
+            </div>
+
+            <!-- BOOKINGS TABLE -->
+            <div class="bg-[#1E1B4B] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-white/5 text-xs text-gray-400 uppercase tracking-wider border-b border-white/10">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Client</th>
+                                <th class="p-4">Phone</th>
+                                <th class="p-4">Service</th>
+                                <th class="p-4">Event Date</th>
+                                <th class="p-4">Message</th>
+                                <th class="p-4">Created At</th>
+                                <th class="p-4 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody" class="divide-y divide-white/5">
+                            <!-- Rows will be injected dynamically via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- EMPTY STATE -->
+                <div id="emptyState" class="hidden p-12 text-center text-gray-400 space-y-2">
+                    <i class="fa-solid fa-inbox text-4xl text-gray-600 mb-2"></i>
+                    <p class="font-bold">No bookings found</p>
+                    <p class="text-xs text-gray-500">New requests submitted by clients will appear here.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // 1. Password authorization handler
+        function handleLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+
+            // Simple admin authentication check
+            if (password === 'admin') {
+                sessionStorage.setItem('kinderwoow_admin_auth', 'true');
+                showDashboard();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        // 2. Display Dashboard and fetch data
+        function showDashboard() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            fetchBookings();
+        }
+
+        // 3. Logout handler
+        function logout() {
+            sessionStorage.removeItem('kinderwoow_admin_auth');
+            location.reload();
+        }
+
+        // 4. Fetch all bookings from backend (Node.js API)
+        async function fetchBookings() {
+            try {
+                const response = await fetch('/api/bookings');
+                const bookings = await response.json();
+
+                const tbody = document.getElementById('bookingsTableBody');
+                const emptyState = document.getElementById('emptyState');
+                tbody.innerHTML = '';
+
+                if (!bookings || bookings.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+
+                // Render booking rows
+                bookings.forEach(booking => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-white/5 transition";
+                    tr.innerHTML = `
+                        <td class="p-4 font-mono text-xs text-gray-500">#${booking.id}</td>
+                        <td class="p-4 font-bold text-white">${escapeHtml(booking.name)}</td>
+                        <td class="p-4 text-pink-400 font-semibold">${escapeHtml(booking.phone)}</td>
+                        <td class="p-4"><span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full font-bold border border-pink-500/30">${escapeHtml(booking.service)}</span></td>
+                        <td class="p-4 text-yellow-400 font-bold">${escapeHtml(booking.date)}</td>
+                        <td class="p-4 text-xs max-w-xs truncate">${escapeHtml(booking.message || '-')}</td>
+                        <td class="p-4 text-xs text-gray-500">${new Date(booking.created_at).toLocaleString()}</td>
+                        <td class="p-4 text-center">
+                            <button onclick="deleteBooking(${booking.id})" class="bg-rose-500/20 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 p-2 rounded-lg transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+                alert('Failed to load bookings from server.');
+            }
+        }
+
+        // 5. Delete booking request
+        async function deleteBooking(id) {
+            if (!confirm(`Are you sure you want to delete booking #${id}?`)) return;
+
+            try {
+                const response = await fetch(`/api/bookings/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    fetchBookings();
+                } else {
+                    alert('Failed to delete booking.');
+                }
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+                alert('Connection to server failed.');
+            }
+        }
+
+        // Helper function to sanitize user inputs
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Check authentication state on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAuth = sessionStorage.getItem('kinderwoow_admin_auth');
+            if (isAuth === 'true') {
+                showDashboard();
+            }
+        });
+    </script>
+</body>
+</html>

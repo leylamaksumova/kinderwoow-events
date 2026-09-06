@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KinderWoow Events</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Styles for phone country code dropdown & flags -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+  
+  <style>
+    /* Dark mode styling for country code dropdown list */
+    .iti { width: 100%; }
+    .iti__country-list {
+      background-color: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-radius: 0.75rem;
+    }
+    .iti__country:hover, .iti__country.iti__highlight {
+      background-color: #ec4899;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body class="bg-[#0c0a1d] text-white font-sans antialiased selection:bg-pink-500 selection:text-white">
+
+  <!-- HEADER SECTION -->
+  <header class="sticky top-0 z-50 bg-[#0c0a1d]/90 backdrop-blur-md border-b border-pink-500/20">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex flex-col items-start leading-none group">
+        <span class="text-3xl md:text-4xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 font-sans">
+          KINDER<span class="text-pink-500">WOOW</span>
+        </span>
+        <span class="bg-gradient-to-r from-pink-600 to-pink-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase mt-0.5 shadow-md shadow-pink-500/30">
+          ★ EVENTS ★
+        </span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold tracking-wide">
+        <a href="#hero" class="text-white hover:text-pink-400 transition" data-i18n="nav_home">STARTSEITE</a>
+        <a href="#services" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_services">UNSERE SERVICES</a>
+        <a href="#gallery" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_gallery">GALERIE</a>
+        <a href="#booking" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_contact">KONTAKT</a>
+      </nav>
+
+      <!-- Language Switcher & CTA Button -->
+      <div class="flex items-center space-x-4">
+        
+        <!-- Custom Language Dropdown (Exact style from your picture) -->
+        <div class="relative">
+          <button type="button" onclick="toggleLangDropdown()" class="bg-slate-900 border border-pink-500/50 rounded-full px-4 py-1.5 flex items-center space-x-2 text-xs font-bold shadow-md shadow-pink-500/10 hover:bg-slate-800 transition focus:outline-none">
+            <span id="currentLangCode" class="text-white text-sm font-black">DE</span>
+            <span id="currentLangName" class="text-gray-400 text-[10px] uppercase font-semibold">Deutsch</span>
+            <svg class="w-3 h-3 text-pink-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+
+          <!-- Dropdown menu list -->
+          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-36 bg-slate-900 border border-pink-500/30 rounded-2xl shadow-xl overflow-hidden z-50 backdrop-blur-md">
+            <div onclick="setLanguage('de')" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition">
+              <span class="font-black text-white text-xs">DE</span>
+              <span class="text-gray-400 text-[10px] uppercase">Deutsch</span>
+            </div>
+            <div onclick="setLanguage('ru')" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition border-t border-white/5">
+              <span class="font-black text-white text-xs">RU</span>
+              <span class="text-gray-400 text-[10px] uppercase">Русский</span>
+            </div>
+            <div onclick="setLanguage('en')" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition border-t border-white/5">
+              <span class="font-black text-white text-xs">EN</span>
+              <span class="text-gray-400 text-[10px] uppercase">English</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="#booking" class="bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-white font-bold px-5 py-2.5 rounded-full shadow-lg shadow-pink-600/40 transform hover:-translate-y-0.5 transition uppercase text-xs tracking-wider" data-i18n="cta_button">
+          JETZT ANFRAGEN
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION WITH BACKGROUND IMAGE -->
+  <section id="hero" class="relative min-h-[85vh] bg-[#0c0a1d] text-white overflow-hidden flex items-center pt-8 pb-16">
+    <div class="absolute inset-0 z-0">
+      <img src="/images/hero-banner.jpg" alt="KinderWoow Events Background" class="w-full h-full object-cover object-center opacity-40">
+      <div class="absolute inset-0 bg-gradient-to-r from-[#0c0a1d] via-[#0c0a1d]/80 to-transparent"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 w-full">
+      <div class="lg:col-span-7 space-y-6">
+        <h1 id="heroTitle" class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.1]">
+          MOMENTE, DIE<br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]">
+            KINDER NIE VERGESSEN.
+          </span>
+        </h1>
+
+        <p class="text-gray-300 text-lg max-w-lg leading-relaxed" data-i18n="hero_desc">
+          Wir bringen Spaß, Lachen und unvergessliche Erlebnisse zu jedem Event!
+        </p>
+
+        <!-- Feature Badges -->
+        <div class="flex flex-wrap gap-3 pt-2 text-xs font-bold uppercase tracking-wider">
+          <span class="flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-yellow-500/40 text-yellow-400 px-3 py-1.5 rounded-full" data-i18n="badge_prof">
+            ★ PROFESSIONELL
+          </span>
+          <span class="flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-pink-500/40 text-pink-400 px-3 py-1.5 rounded-full" data-i18n="badge_rel">
+            ♥ ZUVERLÄSSIG
+          </span>
+          <span class="flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-rose-500/40 text-rose-400 px-3 py-1.5 rounded-full" data-i18n="badge_heart">
+            ♥ MIT HERZ
+          </span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 pt-4">
+          <a href="#services" class="bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black px-7 py-3.5 rounded-full shadow-lg shadow-yellow-500/30 transition transform hover:-translate-y-0.5 flex items-center gap-2 text-sm uppercase" data-i18n="btn_services">
+            UNSERE SERVICES ›
+          </a>
+          <a href="#booking" class="bg-white/10 backdrop-blur-md hover:bg-white/20 border border-white/20 text-white font-bold px-6 py-3.5 rounded-full transition flex items-center gap-2 text-sm uppercase" data-i18n="btn_contact">
+            JETZT ANFRAGEN ✉
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES BAR -->
+  <section id="services" class="bg-white py-4 shadow-xl relative z-20 text-slate-800">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">🐰</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_maskottchen">MASKOTTCHEN</span>
+        </a>
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">🎪</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_shows">SHOWS</span>
+        </a>
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">🎂</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_geburtstage">GEBURTSTAGE</span>
+        </a>
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">🫧</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_foam">SCHAUM PARTY</span>
+        </a>
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">🎈</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_ballon">BALLONSHOWS</span>
+        </a>
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">🎵</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_musik">MUSIK & DJ</span>
+        </a>
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">✨</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_effects">EFFEKTE</span>
+        </a>
+        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+          <span class="text-2xl mb-1 group-hover:scale-110 transition">🎨</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_schminken">SCHMINKEN</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES GALLERY -->
+  <section id="gallery" class="py-16 bg-[#0c0a1d]">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl sm:text-4xl font-black text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-rose-400" data-i18n="gallery_title">
+        UNSERE HIGHLIGHTS & SHOWS
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- 1. Magic Show -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/show.jpg" alt="Zaubershow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-yellow-400" data-i18n="show_magic_title">SHOW & MAGIE</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_magic_desc">Zaubershows und magische Momente für Kinder.</p>
+          </div>
+        </div>
+
+        <!-- 2. Balloon Show -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/balloon.jpg" alt="Ballonshow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-pink-400" data-i18n="cat_ballon">BALLONSHOWS</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_balloon_desc">Kreative Ballonfiguren & Modellage.</p>
+          </div>
+        </div>
+
+        <!-- 3. Special Effects -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/effects.jpg" alt="Spezialeffekte" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-purple-400" data-i18n="cat_effects">SPEZIALEFFEKTE</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_effects_desc">Seifenblasen, Nebel & Funkenregen auf der Bühne.</p>
+          </div>
+        </div>
+
+        <!-- 4. DJ & Music -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/dj.jpg" alt="DJ & Musik" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-amber-400" data-i18n="cat_musik">DJ & MUSIK</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_dj_desc">Kinder-Disco, professioneller Sound & DJ.</p>
+          </div>
+        </div>
+
+        <!-- 5. Birthday Parties -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/birthday.jpg" alt="Geburtstage" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-rose-400" data-i18n="cat_geburtstage">GEBURTSTAGE</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_birthday_desc">Unvergessliche Kindergeburtstage & Torten-Momente.</p>
+          </div>
+        </div>
+
+        <!-- 6. Foam Party -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/foam.jpg" alt="Schaum Party" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-sky-400" data-i18n="cat_foam">SCHAUM PARTY</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_foam_desc">Riesiger Schaumspaß für Outdoor-Events.</p>
+          </div>
+        </div>
+
+        <!-- 7. Mascots & Characters -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/mascot.jpg" alt="Maskottchen" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-red-500" data-i18n="show_mascot_title">MASCOTTCHEN & HELDEN</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_mascot_desc">Lieblingshelden & Maskottchen-Shows.</p>
+          </div>
+        </div>
+
+        <!-- 8. Face Art -->
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
+          <img src="/images/faceart.jpg" alt="Faceart" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
+            <h3 class="font-black text-lg text-emerald-400" data-i18n="cat_schminken">KINDERSCHMINKEN</h3>
+            <p class="text-xs text-gray-300 mt-1" data-i18n="show_faceart_desc">Bunter Aquadruck & professioneller Faceart.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING FORM SECTION -->
+  <section id="booking" class="py-16 bg-[#080615] border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl relative">
+        <h2 class="text-3xl font-black text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-500" data-i18n="form_title">
+          EVENT BUCHEN
+        </h2>
+        <p class="text-gray-400 text-center mb-8 text-sm" data-i18n="form_subtitle">
+          Senden Sie uns eine Anfrage für Ihr Event!
+        </p>
+
+        <!-- Success Message Alert -->
+        <div id="successMsg" class="hidden mb-6 p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-center font-bold" data-i18n="msg_success">
+          🎉 Ihre Anfrage wurde erfolgreich gesendet!
+        </div>
+
+        <form onsubmit="handleBooking(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-gray-300 mb-1" data-i18n="lbl_name">NAME</label>
+            <input type="text" id="name" required class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500" data-i18n-placeholder="ph_name" placeholder="Max Mustermann">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-gray-300 mb-1" data-i18n="lbl_phone">TELEFON</label>
+              <input type="tel" id="phone" required class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-gray-300 mb-1" data-i18n="lbl_date">DATUM</label>
+              <input type="date" id="date" required class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-gray-300 mb-1" data-i18n="lbl_service">SERVICE</label>
+            <select id="service" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
+              <option value="Маскоты и персонажи" data-i18n="opt_maskottchen">Maskottchen & Helden Show</option>
+              <option value="Шоу фокусов и магии" data-i18n="opt_show">Zaubershow & Magie</option>
+              <option value="Детский день рождения" data-i18n="opt_geburtstag">Kindergeburtstag</option>
+              <option value="Пенная вечеринка" data-i18n="opt_foam">Schaum Party</option>
+              <option value="Шар шоу" data-i18n="opt_ballon">Ballonshow</option>
+              <option value="Диджей и музыка" data-i18n="opt_musik">DJ & Musik</option>
+              <option value="Спецэффекты" data-i18n="opt_effects">Spezialeffekte</option>
+              <option value="Аквагрим" data-i18n="opt_schminken">Kinderschminken</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-gray-300 mb-1" data-i18n="lbl_message">NACHRICHT</label>
+            <textarea id="message" rows="3" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500" data-i18n-placeholder="ph_message" placeholder="Details..."></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-white font-black py-4 rounded-xl shadow-lg shadow-pink-600/30 transition transform hover:-translate-y-0.5 uppercase tracking-wider text-sm" data-i18n="btn_submit">
+            RESERVIERUNG ABSENDEN
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let phoneInput;
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const input = document.querySelector("#phone");
+      phoneInput = window.intlTelInput(input, {
+        initialCountry: "auto",
+        separateDialCode: true,
+        geoIpLookup: function(callback) {
+          fetch("https://ipapi.co/json/")
+            .then(res => res.json())
+            .then(data => callback(data.country_code))
+            .catch(() => callback("de"));
+        },
+        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
+      });
+
+      // Close dropdown when clicking outside
+      window.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('langDropdown');
+        const button = dropdown.previousElementSibling;
+        if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.add('hidden');
+        }
+      });
+    });
+
+    function toggleLangDropdown() {
+      const dropdown = document.getElementById('langDropdown');
+      dropdown.classList.toggle('hidden');
+    }
+
+    const translations = {
+      de: {
+        hero_line1: "MOMENTE, DIE",
+        hero_line2: "KINDER NIE VERGESSEN.",
+        nav_home: "STARTSEITE",
+        nav_services: "UNSERE SERVICES",
+        nav_gallery: "GALERIE",
+        nav_contact: "KONTAKT",
+        cta_button: "JETZT ANFRAGEN",
+        hero_desc: "Wir bringen Spaß, Lachen und unvergessliche Erlebnisse zu jedem Event!",
+        badge_prof: "★ PROFESSIONELL",
+        badge_rel: "♥ ZUVERLÄSSIG",
+        badge_heart: "♥ MIT HERZ",
+        btn_services: "UNSERE SERVICES ›",
+        btn_contact: "JETZT ANFRAGEN ✉",
+        cat_maskottchen: "MASKOTTCHEN",
+        cat_shows: "SHOWS",
+        cat_geburtstage: "GEBURTSTAGE",
+        cat_foam: "SCHAUM PARTY",
+        cat_ballon: "BALLONSHOWS",
+        cat_musik: "MUSIK & DJ",
+        cat_effects: "EFFEKTE",
+        cat_schminken: "SCHMINKEN",
+        gallery_title: "UNSERE HIGHLIGHTS & SHOWS",
+        show_magic_title: "SHOW & MAGIE",
+        show_magic_desc: "Zaubershows und magische Momente für Kinder.",
+        show_balloon_desc: "Kreative Ballonfiguren & Modellage.",
+        show_effects_desc: "Seifenblasen, Nebel & Funkenregen auf der Bühne.",
+        show_dj_desc: "Kinder-Disco, professioneller Sound & DJ.",
+        show_birthday_desc: "Unvergessliche Kindergeburtstage & Torten-Momente.",
+        show_foam_desc: "Riesiger Schaumspaß für Outdoor-Events.",
+        show_mascot_title: "MASCOTTCHEN & HELDEN",
+        show_mascot_desc: "Lieblingshelden & Maskottchen-Shows.",
+        show_faceart_desc: "Bunter Aquadruck & professioneller Faceart.",
+        form_title: "EVENT BUCHEN",
+        form_subtitle: "Senden Sie uns eine Anfrage für Ihr Event!",
+        lbl_name: "NAME",
+        lbl_phone: "TELEFON",
+        lbl_date: "DATUM",
+        lbl_service: "SERVICE",
+        lbl_message: "NACHRICHT",
+        ph_name: "Max Mustermann",
+        ph_message: "Details...",
+        opt_maskottchen: "Maskottchen & Helden Show",
+        opt_show: "Zaubershow & Magie",
+        opt_geburtstag: "Kindergeburtstag",
+        opt_foam: "Schaum Party",
+        opt_ballon: "Ballonshow",
+        opt_musik: "DJ & Musik",
+        opt_effects: "Spezialeffekte",
+        opt_schminken: "Kinderschminken",
+        btn_submit: "RESERVIERUNG ABSENDEN",
+        msg_success: "🎉 Ihre Anfrage wurde erfolgreich gesendet!"
+      },
+      ru: {
+        hero_line1: "МОМЕНТЫ, КОТОРЫЕ",
+        hero_line2: "ДЕТИ НИКОГДА НЕ ЗАБУДУТ.",
+        nav_home: "ГЛАВНАЯ",
+        nav_services: "УСЛУГИ",
+        nav_gallery: "ГАЛЕРЕЯ",
+        nav_contact: "КОНТАКТЫ",
+        cta_button: "ЗАКАЗАТЬ",
+        hero_desc: "Мы приносим радость, смех и незабываемые впечатления на любой праздник!",
+        badge_prof: "★ ПРОФЕССИОНАЛЬНО",
+        badge_rel: "♥ НАДЕЖНО",
+        badge_heart: "♥ С ДУШОЙ",
+        btn_services: "НАШИ УСЛУГИ ›",
+        btn_contact: "ЗАКАЗАТЬ ✉",
+        cat_maskottchen: "МАСКОТЫ",
+        cat_shows: "ШОУ И ФОКУСЫ",
+        cat_geburtstage: "ДНИ РОЖДЕНИЯ",
+        cat_foam: "ПЕННАЯ ВЕЧЕРИНКА",
+        cat_ballon: "БАЛЛУН-ШОУ",
+        cat_musik: "ДИДЖЕЙ И МУЗЫКА",
+        cat_effects: "СПЕЦЭФФЕКТЫ",
+        cat_schminken: "АКВАГРИМ",
+        gallery_title: "НАШИ ШОУ И УСЛУГИ",
+        show_magic_title: "ШОУ И ФОКУСЫ",
+        show_magic_desc: "Иллюзии и фокусы для детей.",
+        show_balloon_desc: "Фигуры и твистинг из шариков.",
+        show_effects_desc: "Дым, мыльные пузыри и спецэффекты.",
+        show_dj_desc: "Детская дискотека и музыкальное сопровождение.",
+        show_birthday_desc: "Незабываемые праздники и поздравления.",
+        show_foam_desc: "Пенное шоу на свежем воздухе.",
+        show_mascot_title: "МАСКОТЫ И ПЕРСОНАЖИ",
+        show_mascot_desc: "Персонажные шоу и любимые герои.",
+        show_faceart_desc: "Яркий и безопасный аквагрим.",
+        form_title: "ЗАБРОНИРОВАТЬ ПРАЗДНИК",
+        form_subtitle: "Отправьте нам заявку на ваше мероприятие!",
+        lbl_name: "ИМЯ",
+        lbl_phone: "ТЕЛЕФОН",
+        lbl_date: "ДАТА",
+        lbl_service: "УСЛУГА",
+        lbl_message: "СООБЩЕНИЕ",
+        ph_name: "Иван Иванов",
+        ph_message: "Подробности...",
+        opt_maskottchen: "Маскоты и персонажи",
+        opt_show: "Шоу фокусов и магии",
+        opt_geburtstag: "Детский день рождения",
+        opt_foam: "Пенная вечеринка",
+        opt_ballon: "Шар шоу",
+        opt_musik: "Диджей и музыка",
+        opt_effects: "Спецэффекты",
+        opt_schminken: "Аквагрим",
+        btn_submit: "ОТПРАВИТЬ ЗАЯВКУ",
+        msg_success: "🎉 Ваша заявка успешно отправлена!"
+      },
+      en: {
+        hero_line1: "MOMENTS THAT",
+        hero_line2: "KIDS WILL NEVER FORGET.",
+        nav_home: "HOME",
+        nav_services: "OUR SERVICES",
+        nav_gallery: "GALLERY",
+        nav_contact: "CONTACT",
+        cta_button: "BOOK NOW",
+        hero_desc: "We bring fun, laughter and unforgettable experiences to every event!",
+        badge_prof: "★ PROFESSIONAL",
+        badge_rel: "♥ RELIABLE",
+        badge_heart: "♥ WITH PASSION",
+        btn_services: "OUR SERVICES ›",
+        btn_contact: "BOOK NOW ✉",
+        cat_maskottchen: "MASCOTS",
+        cat_shows: "SHOWS & MAGIC",
+        cat_geburtstage: "BIRTHDAYS",
+        cat_foam: "FOAM PARTY",
+        cat_ballon: "BALLOON SHOW",
+        cat_musik: "DJ & MUSIC",
+        cat_effects: "EFFECTS",
+        cat_schminken: "FACE ART",
+        gallery_title: "OUR HIGHLIGHTS & SHOWS",
+        show_magic_title: "SHOW & MAGIC",
+        show_magic_desc: "Magic shows and illusions for kids.",
+        show_balloon_desc: "Balloon modeling & shapes.",
+        show_effects_desc: "Bubbles, fog & stage effects.",
+        show_dj_desc: "Kids disco & professional sound.",
+        show_birthday_desc: "Unforgettable birthday parties.",
+        show_foam_desc: "Huge foam fun for outdoor events.",
+        show_mascot_title: "MASCOTS & CHARACTERS",
+        show_mascot_desc: "Character shows & heroes.",
+        show_faceart_desc: "Colorful & safe face art.",
+        form_title: "BOOK AN EVENT",
+        form_subtitle: "Send us an inquiry for your event!",
+        lbl_name: "NAME",
+        lbl_phone: "PHONE",
+        lbl_date: "DATE",
+        lbl_service: "SERVICE",
+        lbl_message: "MESSAGE",
+        ph_name: "John Doe",
+        ph_message: "Details...",
+        opt_maskottchen: "Mascots & Characters",
+        opt_show: "Magic Show & Illusion",
+        opt_geburtstag: "Kids Birthday Party",
+        opt_foam: "Foam Party",
+        opt_ballon: "Balloon Show",
+        opt_musik: "DJ & Music Service",
+        opt_effects: "Special Effects",
+        opt_schminken: "Face Art",
+        btn_submit: "SEND BOOKING",
+        msg_success: "🎉 Your booking request has been sent successfully!"
+      }
+    };
+
+    const langNames = {
+      de: "Deutsch",
+      ru: "Русский",
+      en: "English"
+    };
+
+    function setLanguage(lang) {
+      const dict = translations[lang] || translations.de;
+      
+      // Update custom dropdown button text
+      document.getElementById('currentLangCode').textContent = lang.toUpperCase();
+      document.getElementById('currentLangName').textContent = langNames[lang];
+      document.getElementById('langDropdown').classList.add('hidden');
+
+      const titleEl = document.getElementById('heroTitle');
+      if (titleEl && dict.hero_line1 && dict.hero_line2) {
+        titleEl.innerHTML = `${dict.hero_line1}<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]">${dict.hero_line2}</span>`;
+      }
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) {
+          el.setAttribute('placeholder', dict[key]);
+        }
+      });
+    }
+
+    async function handleBooking(event) {
+      event.preventDefault();
+      
+      const fullPhoneNumber = phoneInput ? phoneInput.getNumber() : document.getElementById('phone').value;
+
+      const payload = {
+        name: document.getElementById('name').value,
+        phone: fullPhoneNumber,
+        date: document.getElementById('date').value,
+        service: document.getElementById('service').value,
+        message: document.getElementById('message').value
+      };
+
+      try {
+        const response = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          const successMsg = document.getElementById('successMsg');
+          successMsg.classList.remove('hidden');
+          event.target.reset();
+          setTimeout(() => successMsg.classList.add('hidden'), 5000);
+        } else {
+          alert('Error: ' + (result.error || 'Failed to submit'));
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        alert('Connection to server failed.');
+      }
+    }
+  </script>
+</body>
+</html>
