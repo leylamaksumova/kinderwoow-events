@@ -4,7 +4,8 @@
   "description": "KinderWoow Backend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "npm rebuild sqlite3"
   },
   "dependencies": {
     "express": "^4.19.2",
