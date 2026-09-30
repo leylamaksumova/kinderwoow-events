@@ -163,7 +163,8 @@
                 <form onsubmit="saveSiteContent(event)" class="space-y-4 pt-2">
                     <div>
                         <label id="lblContentKey" class="block text-xs font-bold text-gray-300 mb-1">Text Block Key (e.g., hero_line1)</label>
-                        <input type="text" id="contentKey" value="hero_line1" required class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                        <select id="contentKey" onchange="loadSelectedText()" required class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500"></select>
+                        <p id="txtContentStatus" class="text-[11px] text-gray-500 mt-1"></p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
@@ -179,9 +180,14 @@
                             <textarea id="contentEn" rows="3" required class="w-full bg-[#0B0F19] border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-pink-500"></textarea>
                         </div>
                     </div>
-                    <button type="submit" id="btnSaveText" class="bg-gradient-to-r from-yellow-500 to-pink-500 text-slate-950 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-wider hover:opacity-90 transition shadow-lg">
-                        💾 Save Changes on Website
-                    </button>
+                    <div class="flex flex-wrap gap-3">
+                        <button type="submit" id="btnSaveText" class="bg-gradient-to-r from-yellow-500 to-pink-500 text-slate-950 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-wider hover:opacity-90 transition shadow-lg">
+                            💾 Save Changes on Website
+                        </button>
+                        <button type="button" id="btnResetText" onclick="fillDefaultText()" class="bg-white/10 hover:bg-white/20 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition">
+                            ↺ Restore original text
+                        </button>
+                    </div>
                 </form>
             </div>
 
@@ -189,6 +195,7 @@
     </div>
 
     <!-- SCRIPTS -->
+    <script src="/js/site-texts.js"></script>
     <script>
         let allBookings = []; 
 
@@ -219,7 +226,11 @@
                 pending: "⏳ Pending", accepted: "✅ Accepted", rejected: "❌ Rejected",
                 cmsTitle: "✏️ Website Text Editor (CMS)",
                 cmsDesc: "Edit main texts on the website for all languages.",
-                lblKey: "Text Block Key (e.g., hero_line1)",
+                lblKey: "Which text do you want to change?",
+                btnReset: "↺ Restore original text",
+                statusEdited: "✏️ This text was changed in the admin panel.",
+                statusDefault: "This is the original website text.",
+                savedOk: "✅ Text saved! Reload the website to see it.",
                 lblRu: "🇷🇺 Russian Text (RU)",
                 lblDe: "🇩🇪 German Text (DE)",
                 lblEn: "🇬🇧 English Text (EN)",
@@ -238,7 +249,11 @@
                 pending: "⏳ Ausstehend", accepted: "✅ Angenommen", rejected: "❌ Abgelehnt",
                 cmsTitle: "✏️ Website Texteditor (CMS)",
                 cmsDesc: "Bearbeiten Sie Haupttexte der Website für alle Sprachen.",
-                lblKey: "Textschlüssel (z. B. hero_line1)",
+                lblKey: "Welchen Text möchten Sie ändern?",
+                btnReset: "↺ Originaltext wiederherstellen",
+                statusEdited: "✏️ Dieser Text wurde im Admin-Bereich geändert.",
+                statusDefault: "Das ist der Originaltext der Website.",
+                savedOk: "✅ Text gespeichert! Laden Sie die Website neu, um ihn zu sehen.",
                 lblRu: "🇷🇺 Russischer Text (RU)",
                 lblDe: "🇩🇪 Deutscher Text (DE)",
                 lblEn: "🇬🇧 Englischer Text (EN)",
@@ -257,7 +272,11 @@
                 pending: "⏳ В ожидании", accepted: "✅ Принято", rejected: "❌ Отклонено",
                 cmsTitle: "✏️ Редактор текста сайта (CMS)",
                 cmsDesc: "Изменяйте тексты на главной странице для всех языков.",
-                lblKey: "Ключ текстового блока (например: hero_line1)",
+                lblKey: "Какой текст хотите изменить?",
+                btnReset: "↺ Вернуть исходный текст",
+                statusEdited: "✏️ Этот текст уже изменён через админку.",
+                statusDefault: "Это исходный текст сайта.",
+                savedOk: "✅ Текст сохранён! Обновите сайт, чтобы увидеть изменения.",
                 lblRu: "🇷🇺 Русский текст (RU)",
                 lblDe: "🇩🇪 Текст на немецком (DE)",
                 lblEn: "🇬🇧 Текст на английском (EN)",
@@ -309,6 +328,8 @@
             document.getElementById('lblContentDe').innerText = t.lblDe;
             document.getElementById('lblContentEn').innerText = t.lblEn;
             document.getElementById('btnSaveText').innerText = t.btnSave;
+            document.getElementById('btnResetText').innerText = t.btnReset;
+            buildTextSelector();
 
             updateServicesDropdown(lang);
 
@@ -344,7 +365,7 @@
             });
         }
 
-        // Secure login handled via backend API request (No plain passwords in frontend code)
+        // Login: the password is checked on the server, which sets an HttpOnly session cookie
         async function handleLogin(event) {
             event.preventDefault();
             const password = document.getElementById('adminPassword').value;
@@ -356,10 +377,11 @@
                     body: JSON.stringify({ password })
                 });
 
-                const result = await response.json();
+                const result = await response.json().catch(() => ({}));
 
                 if (response.ok && result.success) {
-                    sessionStorage.setItem('kinderwoow_admin_auth', 'true');
+                    document.getElementById('loginError').classList.add('hidden');
+                    document.getElementById('adminPassword').value = '';
                     showDashboard();
                 } else {
                     document.getElementById('loginError').classList.remove('hidden');
@@ -379,23 +401,135 @@
             changeLanguage(savedLang);
 
             fetchBookings();
+            fetchSiteContent();
         }
 
-        function logout() {
-            sessionStorage.removeItem('kinderwoow_admin_auth');
-            location.reload();
+        // Session expired or missing: go back to the login screen
+        function showLogin() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/admin/logout', { method: 'POST' });
+            } finally {
+                location.reload();
+            }
         }
 
         // Fetch all booking requests from backend
         async function fetchBookings() {
             try {
                 const response = await fetch('/api/bookings');
+                if (response.status === 401) {
+                    showLogin();
+                    return;
+                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 allBookings = await response.json();
                 filterTable();
             } catch (error) {
                 console.error('Error fetching bookings:', error);
                 alert('Failed to load bookings from server.');
             }
+        }
+
+        // ---- CMS text editor ----
+        // Texts saved in the admin panel: { key: { ru, de, en } }
+        let savedContent = {};
+
+        // Groups for the text dropdown, by key prefix
+        const TEXT_GROUPS = [
+            { prefixes: ['nav_', 'cta_'], name: { ru: 'Меню', de: 'Menü', en: 'Menu' } },
+            { prefixes: ['hero_', 'badge_', 'btn_services', 'btn_contact'], name: { ru: 'Главный экран', de: 'Startbereich', en: 'Hero section' } },
+            { prefixes: ['cat_'], name: { ru: 'Категории', de: 'Kategorien', en: 'Categories' } },
+            { prefixes: ['gallery_', 'show_'], name: { ru: 'Галерея / шоу', de: 'Galerie / Shows', en: 'Gallery / shows' } },
+            { prefixes: ['form_', 'lbl_', 'ph_', 'opt_', 'btn_submit', 'msg_'], name: { ru: 'Форма заявки', de: 'Buchungsformular', en: 'Booking form' } },
+            { prefixes: ['footer_'], name: { ru: 'Футер', de: 'Footer', en: 'Footer' } },
+        ];
+        const OTHER_GROUP = { ru: 'Другое', de: 'Sonstiges', en: 'Other' };
+
+        function adminLang() {
+            return localStorage.getItem('kinderwoow_admin_lang') || 'en';
+        }
+
+        function adminT() {
+            return translations[adminLang()] || translations.en;
+        }
+
+        // Current text for a key: the saved CMS text, or the website default
+        function currentText(key, lang) {
+            const saved = savedContent[key] && savedContent[key][lang];
+            return saved || (window.SITE_TEXTS[lang] && window.SITE_TEXTS[lang][key]) || '';
+        }
+
+        function shorten(text, max = 60) {
+            return text.length > max ? text.slice(0, max - 1) + '…' : text;
+        }
+
+        // Fill the dropdown with every website text, grouped by section
+        function buildTextSelector() {
+            const select = document.getElementById('contentKey');
+            if (!select || !window.SITE_TEXTS) return;
+            const lang = adminLang();
+            const selected = select.value || 'hero_line1';
+            const groups = TEXT_GROUPS.map(g => ({ label: g.name[lang] || g.name.en, keys: [] }));
+            const other = { label: OTHER_GROUP[lang] || OTHER_GROUP.en, keys: [] };
+
+            Object.keys(window.SITE_TEXTS.de).forEach(key => {
+                const index = TEXT_GROUPS.findIndex(g => g.prefixes.some(p => key.startsWith(p)));
+                (index === -1 ? other : groups[index]).keys.push(key);
+            });
+
+            select.innerHTML = '';
+            [...groups, other].filter(g => g.keys.length).forEach(group => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = group.label;
+                group.keys.forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    const edited = savedContent[key] ? '✏️ ' : '';
+                    option.textContent = edited + shorten(currentText(key, lang));
+                    optgroup.appendChild(option);
+                });
+                select.appendChild(optgroup);
+            });
+            select.value = selected;
+            loadSelectedText();
+        }
+
+        // Put the current texts of the selected key into the three text fields
+        function loadSelectedText() {
+            const key = document.getElementById('contentKey').value;
+            if (!key) return;
+            document.getElementById('contentRu').value = currentText(key, 'ru');
+            document.getElementById('contentDe').value = currentText(key, 'de');
+            document.getElementById('contentEn').value = currentText(key, 'en');
+            updateTextStatus();
+        }
+
+        function fillDefaultText() {
+            const key = document.getElementById('contentKey').value;
+            document.getElementById('contentRu').value = window.SITE_TEXTS.ru[key] || '';
+            document.getElementById('contentDe').value = window.SITE_TEXTS.de[key] || '';
+            document.getElementById('contentEn').value = window.SITE_TEXTS.en[key] || '';
+        }
+
+        function updateTextStatus() {
+            const key = document.getElementById('contentKey').value;
+            const t = adminT();
+            document.getElementById('txtContentStatus').innerText = savedContent[key] ? t.statusEdited : t.statusDefault;
+        }
+
+        async function fetchSiteContent() {
+            try {
+                const response = await fetch('/api/content');
+                if (response.ok) savedContent = await response.json();
+            } catch (error) {
+                console.error('Error loading site texts:', error);
+            }
+            buildTextSelector();
         }
 
         // Save updated site content via CMS API
@@ -414,9 +548,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                const result = await response.json();
+                if (response.status === 401) {
+                    showLogin();
+                    return;
+                }
+                const result = await response.json().catch(() => ({}));
                 if (result.success) {
-                    alert('✅ Text successfully saved and updated on the website!');
+                    savedContent[payload.key] = { ru: payload.ru, de: payload.de, en: payload.en };
+                    buildTextSelector();
+                    alert(adminT().savedOk);
                 } else {
                     alert('❌ Save error: ' + (result.error || 'unknown'));
                 }
@@ -522,9 +662,13 @@
                     const target = allBookings.find(b => b.id === id);
                     if (target) {
                         target.status = newStatus;
-                        target.is_read = 1;
+                        target.is_read = true;
                     }
                     filterTable();
+                } else if (response.status === 401) {
+                    showLogin();
+                } else {
+                    alert('Failed to update status.');
                 }
             } catch (error) {
                 console.error('Error updating status:', error);
@@ -534,7 +678,7 @@
 
         function escapeHtml(text) {
             if (!text) return '';
-            return text
+            return String(text)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
@@ -542,11 +686,13 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const isAuth = sessionStorage.getItem('kinderwoow_admin_auth');
-            if (isAuth === 'true') {
-                showDashboard();
+        // Check authentication on page load (asks the server, not sessionStorage)
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/admin/session');
+                if (response.ok) showDashboard();
+            } catch (error) {
+                console.error('Session check failed:', error);
             }
         });
     </script>
