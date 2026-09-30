@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KinderWoow - Admin Panel</title>
+    <title>KinderWoow - Admin Panel & CMS</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -30,15 +30,15 @@
         <div class="bg-[#1E1B4B] border border-white/10 p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6">
             <div class="text-center space-y-2">
                 <h1 class="text-3xl font-black bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text text-transparent">KINDERWOOW</h1>
-                <p class="text-xs text-gray-400 uppercase tracking-widest">Admin Authorization</p>
+                <p id="txtLoginTitle" class="text-xs text-gray-400 uppercase tracking-widest">Admin Authorization</p>
             </div>
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-2">Password</label>
+                    <label id="lblPassword" class="block text-xs font-semibold text-gray-300 mb-2">Password</label>
                     <input type="password" id="adminPassword" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-pink-500 transition" placeholder="Enter admin password">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-yellow-500 font-bold py-3 rounded-xl shadow-lg hover:scale-[1.01] transition uppercase tracking-wider text-xs">
+                <button type="submit" id="btnLogin" class="w-full bg-gradient-to-r from-pink-500 to-yellow-500 font-bold py-3 rounded-xl shadow-lg hover:scale-[1.01] transition uppercase tracking-wider text-xs">
                     Login
                 </button>
             </form>
@@ -54,150 +54,484 @@
         <header class="bg-[#0B0F19]/90 border-b border-white/10 px-6 py-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md">
             <div class="flex items-center gap-3">
                 <span class="text-xl font-black bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text text-transparent">KINDERWOOW</span>
-                <span class="bg-pink-500/20 text-pink-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border border-pink-500/30">Admin Panel</span>
+                <span id="txtAdminBadge" class="bg-pink-500/20 text-pink-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border border-pink-500/30">Admin Panel</span>
             </div>
-            <button onclick="logout()" class="text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition">
-                Logout <i class="fa-solid fa-right-from-bracket ml-1"></i>
-            </button>
+            
+            <div class="flex items-center gap-3">
+                <!-- LANGUAGE SELECTOR (EN, DE, RU) -->
+                <select id="langSelector" onchange="changeLanguage(this.value)" class="bg-[#1E1B4B] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-pink-500 font-bold">
+                    <option value="en">🇬🇧 EN</option>
+                    <option value="de">🇩🇪 DE</option>
+                    <option value="ru">🇷🇺 RU</option>
+                </select>
+
+                <button onclick="logout()" class="text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+                    <span id="txtLogout">Logout</span> <i class="fa-solid fa-right-from-bracket ml-1"></i>
+                </button>
+            </div>
         </header>
 
         <!-- DASHBOARD CONTENT -->
-        <main class="max-w-7xl mx-auto p-6 space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <main class="max-w-7xl mx-auto p-6 space-y-8">
+            
+            <!-- SECTION 1: BOOKING REQUESTS -->
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <h2 id="txtBookingRequests" class="text-2xl font-black">Booking Requests</h2>
+                            <span id="totalBadge" class="bg-white/10 text-yellow-400 text-xs font-bold px-3 py-1 rounded-full border border-white/10">Total: 0</span>
+                        </div>
+                        <p id="txtManageDesc" class="text-xs text-gray-400 mt-1">Manage client requests submitted via website form.</p>
+                    </div>
+                    <button onclick="fetchBookings()" class="bg-pink-500 hover:bg-pink-600 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> <span id="txtRefresh">Refresh Data</span>
+                    </button>
+                </div>
+
+                <!-- FILTERS CONTAINER -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3 bg-[#1E1B4B]/50 p-4 rounded-2xl border border-white/10">
+                    <div>
+                        <label id="lblFilterClient" class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Search Client</label>
+                        <input type="text" id="filterClient" oninput="filterTable()" placeholder="Name..." class="w-full bg-[#0B0F19] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="lblFilterPhone" class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Search Phone</label>
+                        <input type="text" id="filterPhone" oninput="filterTable()" placeholder="Phone..." class="w-full bg-[#0B0F19] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="lblFilterService" class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Search Service</label>
+                        <select id="filterService" onchange="filterTable()" class="w-full bg-[#0B0F19] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label id="lblFilterFrom" class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Date From</label>
+                        <input type="date" id="filterDateFrom" onchange="filterTable()" class="w-full bg-[#0B0F19] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="lblFilterTil" class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Date Til</label>
+                        <input type="date" id="filterDateTil" onchange="filterTable()" class="w-full bg-[#0B0F19] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="lblFilterStatus" class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Filter Status</label>
+                        <select id="filterStatus" onchange="filterTable()" class="w-full bg-[#0B0F19] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                            <option value="" id="optAllStatuses">All Statuses</option>
+                            <option value="pending" id="optPending">⏳ Pending</option>
+                            <option value="accepted" id="optAccepted">✅ Accepted</option>
+                            <option value="rejected" id="optRejected">❌ Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- BOOKINGS TABLE -->
+                <div class="bg-[#1E1B4B] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-300">
+                            <thead class="bg-white/5 text-xs text-gray-400 uppercase tracking-wider border-b border-white/10">
+                                <tr>
+                                    <th id="thClient" class="p-4">Client</th>
+                                    <th id="thPhone" class="p-4">Phone</th>
+                                    <th id="thService" class="p-4">Service</th>
+                                    <th id="thDate" class="p-4">Event Date</th>
+                                    <th id="thMessage" class="p-4">Message</th>
+                                    <th id="thStatus" class="p-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingsTableBody" class="divide-y divide-white/5">
+                                <!-- Rows injected dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- EMPTY STATE -->
+                    <div id="emptyState" class="hidden p-12 text-center text-gray-400 space-y-2">
+                        <i class="fa-solid fa-inbox text-4xl text-gray-600 mb-2"></i>
+                        <p id="txtNoBookings" class="font-bold">No bookings found</p>
+                        <p id="txtNewRequests" class="text-xs text-gray-500">New requests submitted by clients will appear here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: CMS TEXT EDITOR -->
+            <div class="bg-[#1E1B4B] border border-white/10 rounded-2xl p-6 shadow-2xl space-y-4">
                 <div>
-                    <h2 class="text-2xl font-black">Booking Requests</h2>
-                    <p class="text-xs text-gray-400">Manage client requests submitted via website form.</p>
-                </div>
-                <button onclick="fetchBookings()" class="bg-pink-500 hover:bg-pink-600 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-                    <i class="fa-solid fa-rotate-right"></i> Refresh Data
-                </button>
-            </div>
-
-            <!-- BOOKINGS TABLE -->
-            <div class="bg-[#1E1B4B] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-300">
-                        <thead class="bg-white/5 text-xs text-gray-400 uppercase tracking-wider border-b border-white/10">
-                            <tr>
-                                <th class="p-4">ID</th>
-                                <th class="p-4">Client</th>
-                                <th class="p-4">Phone</th>
-                                <th class="p-4">Service</th>
-                                <th class="p-4">Event Date</th>
-                                <th class="p-4">Message</th>
-                                <th class="p-4">Created At</th>
-                                <th class="p-4 text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bookingsTableBody" class="divide-y divide-white/5">
-                            <!-- Rows will be injected dynamically via JavaScript -->
-                        </tbody>
-                    </table>
+                    <h3 id="txtCmsTitle" class="text-xl font-black text-yellow-400">✏️ Website Text Editor (CMS)</h3>
+                    <p id="txtCmsDesc" class="text-xs text-gray-400 mt-0.5">Edit main texts on the website for all languages.</p>
                 </div>
 
-                <!-- EMPTY STATE -->
-                <div id="emptyState" class="hidden p-12 text-center text-gray-400 space-y-2">
-                    <i class="fa-solid fa-inbox text-4xl text-gray-600 mb-2"></i>
-                    <p class="font-bold">No bookings found</p>
-                    <p class="text-xs text-gray-500">New requests submitted by clients will appear here.</p>
-                </div>
+                <form onsubmit="saveSiteContent(event)" class="space-y-4 pt-2">
+                    <div>
+                        <label id="lblContentKey" class="block text-xs font-bold text-gray-300 mb-1">Text Block Key (e.g., hero_line1)</label>
+                        <input type="text" id="contentKey" value="hero_line1" required class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label id="lblContentRu" class="block text-xs font-bold text-pink-400 mb-1">🇷🇺 Russian Text (RU)</label>
+                            <textarea id="contentRu" rows="3" required class="w-full bg-[#0B0F19] border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-pink-500"></textarea>
+                        </div>
+                        <div>
+                            <label id="lblContentDe" class="block text-xs font-bold text-pink-400 mb-1">🇩🇪 German Text (DE)</label>
+                            <textarea id="contentDe" rows="3" required class="w-full bg-[#0B0F19] border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-pink-500"></textarea>
+                        </div>
+                        <div>
+                            <label id="lblContentEn" class="block text-xs font-bold text-pink-400 mb-1">🇬🇧 English Text (EN)</label>
+                            <textarea id="contentEn" rows="3" required class="w-full bg-[#0B0F19] border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-pink-500"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" id="btnSaveText" class="bg-gradient-to-r from-yellow-500 to-pink-500 text-slate-950 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-wider hover:opacity-90 transition shadow-lg">
+                        💾 Save Changes on Website
+                    </button>
+                </form>
             </div>
+
         </main>
     </div>
 
     <!-- SCRIPTS -->
     <script>
-        // 1. Password authorization handler
-        function handleLogin(event) {
+        let allBookings = []; 
+
+        // Services dictionary for multi-language support
+        const servicesMapping = [
+            { keys: ["Maskottchen & Helden Show", "Mascot & Heroes Show", "Шоу талисманов и героев"], de: "Maskottchen & Helden Show", en: "Mascot & Heroes Show", ru: "Шоу талисманов и героев" },
+            { keys: ["Zaubershow & Magie", "Magic & Illusion Show", "Шоу фокусов и магии"], de: "Zaubershow & Magie", en: "Magic & Illusion Show", ru: "Шоу фокусов и магии" },
+            { keys: ["Kindergeburtstag", "Children's Birthday", "День рождения ребенка"], de: "Kindergeburtstag", en: "Children's Birthday", ru: "День рождения ребенка" },
+            { keys: ["Schaum Party", "Foam Party", "Пенная вечеринка"], de: "Schaum Party", en: "Foam Party", ru: "Пенная вечеринка" },
+            { keys: ["Ballonshow", "Balloon Show", "Шоу воздушных шаров"], de: "Ballonshow", en: "Balloon Show", ru: "Шоу воздушных шаров" },
+            { keys: ["DJ & Musik", "DJ & Music", "Диджей и музыка"], de: "DJ & Musik", en: "DJ & Music", ru: "Диджей и музыка" },
+            { keys: ["Spezialeffekte", "Special Effects", "Спецэффекты"], de: "Spezialeffekte", en: "Special Effects", ru: "Спецэффекты" },
+            { keys: ["Kinderschminken", "Face Painting", "Аквагрим"], de: "Kinderschminken", en: "Face Painting", ru: "Аквагрим" }
+        ];
+
+        // Admin panel translations (EN, DE, RU)
+        const translations = {
+            en: {
+                loginTitle: "Admin Authorization", passwordLabel: "Password", loginBtn: "Login", invalidPass: "Invalid password!",
+                adminBadge: "Admin Panel", logout: "Logout", bookingRequests: "Booking Requests",
+                manageDesc: "Manage client requests submitted via website form.", refreshData: "Refresh Data",
+                filterClient: "Search Client", filterPhone: "Search Phone", filterService: "Search Service",
+                filterFrom: "Date From", filterTil: "Date Til", filterStatus: "Filter Status",
+                thClient: "Client", thPhone: "Phone", thService: "Service", thDate: "Event Date",
+                thMessage: "Message", thStatus: "Status", noBookings: "No bookings found",
+                newRequests: "New requests submitted by clients will appear here.",
+                allServices: "All Services", allStatuses: "All Statuses",
+                pending: "⏳ Pending", accepted: "✅ Accepted", rejected: "❌ Rejected",
+                cmsTitle: "✏️ Website Text Editor (CMS)",
+                cmsDesc: "Edit main texts on the website for all languages.",
+                lblKey: "Text Block Key (e.g., hero_line1)",
+                lblRu: "🇷🇺 Russian Text (RU)",
+                lblDe: "🇩🇪 German Text (DE)",
+                lblEn: "🇬🇧 English Text (EN)",
+                btnSave: "💾 Save Changes on Website"
+            },
+            de: {
+                loginTitle: "Admin-Anmeldung", passwordLabel: "Passwort", loginBtn: "Anmelden", invalidPass: "Ungültiges Passwort!",
+                adminBadge: "Admin-Bereich", logout: "Abmelden", bookingRequests: "Buchungsanfragen",
+                manageDesc: "Verwalten Sie Kundenanfragen aus dem Website-Formular.", refreshData: "Daten aktualisieren",
+                filterClient: "Kunde suchen", filterPhone: "Telefon suchen", filterService: "Dienst suchen",
+                filterFrom: "Datum von", filterTil: "Datum bis", filterStatus: "Status filtern",
+                thClient: "Kunde", thPhone: "Telefon", thService: "Dienstleistung", thDate: "Veranstaltungsdatum",
+                thMessage: "Nachricht", thStatus: "Status", noBookings: "Keine Buchungen gefunden",
+                newRequests: "Neue Kundenanfragen werden hier angezeigt.",
+                allServices: "Alle Dienste", allStatuses: "Alle Status",
+                pending: "⏳ Ausstehend", accepted: "✅ Angenommen", rejected: "❌ Abgelehnt",
+                cmsTitle: "✏️ Website Texteditor (CMS)",
+                cmsDesc: "Bearbeiten Sie Haupttexte der Website für alle Sprachen.",
+                lblKey: "Textschlüssel (z. B. hero_line1)",
+                lblRu: "🇷🇺 Russischer Text (RU)",
+                lblDe: "🇩🇪 Deutscher Text (DE)",
+                lblEn: "🇬🇧 Englischer Text (EN)",
+                btnSave: "💾 Änderungen auf Website speichern"
+            },
+            ru: {
+                loginTitle: "Авторизация администратора", passwordLabel: "Пароль", loginBtn: "Войти", invalidPass: "Неверный пароль!",
+                adminBadge: "Панель админа", logout: "Выйти", bookingRequests: "Заявки на бронирование",
+                manageDesc: "Управление заявками клиентов с формы сайта.", refreshData: "Обновить данные",
+                filterClient: "Поиск клиента", filterPhone: "Поиск телефона", filterService: "Поиск услуги",
+                filterFrom: "Дата с", filterTil: "Дата по", filterStatus: "Фильтр статуса",
+                thClient: "Клиент", thPhone: "Телефон", thService: "Услуга", thDate: "Дата мероприятия",
+                thMessage: "Сообщение", thStatus: "Статус", noBookings: "Заявки не найдены",
+                newRequests: "Новые заявки от клиентов появятся здесь.",
+                allServices: "Все услуги", allStatuses: "Все статусы",
+                pending: "⏳ В ожидании", accepted: "✅ Принято", rejected: "❌ Отклонено",
+                cmsTitle: "✏️ Редактор текста сайта (CMS)",
+                cmsDesc: "Изменяйте тексты на главной странице для всех языков.",
+                lblKey: "Ключ текстового блока (например: hero_line1)",
+                lblRu: "🇷🇺 Русский текст (RU)",
+                lblDe: "🇩🇪 Текст на немецком (DE)",
+                lblEn: "🇬🇧 Текст на английском (EN)",
+                btnSave: "💾 Сохранить изменения на сайте"
+            }
+        };
+
+        // Change admin interface language
+        function changeLanguage(lang) {
+            localStorage.setItem('kinderwoow_admin_lang', lang);
+            const t = translations[lang];
+
+            document.getElementById('txtLoginTitle').innerText = t.loginTitle;
+            document.getElementById('lblPassword').innerText = t.passwordLabel;
+            document.getElementById('btnLogin').innerText = t.loginBtn;
+            document.getElementById('loginError').innerText = t.invalidPass;
+            document.getElementById('txtAdminBadge').innerText = t.adminBadge;
+            document.getElementById('txtLogout').innerText = t.logout;
+            document.getElementById('txtBookingRequests').innerText = t.bookingRequests;
+            document.getElementById('txtManageDesc').innerText = t.manageDesc;
+            document.getElementById('txtRefresh').innerText = t.refreshData;
+            document.getElementById('lblFilterClient').innerText = t.filterClient;
+            document.getElementById('lblFilterPhone').innerText = t.filterPhone;
+            document.getElementById('lblFilterService').innerText = t.filterService;
+            document.getElementById('lblFilterFrom').innerText = t.filterFrom;
+            document.getElementById('lblFilterTil').innerText = t.filterTil;
+            document.getElementById('lblFilterStatus').innerText = t.filterStatus;
+            
+            document.getElementById('thClient').innerText = t.thClient;
+            document.getElementById('thPhone').innerText = t.thPhone;
+            document.getElementById('thService').innerText = t.thService;
+            document.getElementById('thDate').innerText = t.thDate;
+            document.getElementById('thMessage').innerText = t.thMessage;
+            document.getElementById('thStatus').innerText = t.thStatus;
+            
+            document.getElementById('txtNoBookings').innerText = t.noBookings;
+            document.getElementById('txtNewRequests').innerText = t.newRequests;
+
+            document.getElementById('optAllStatuses').innerText = t.allStatuses;
+            document.getElementById('optPending').innerText = t.pending;
+            document.getElementById('optAccepted').innerText = t.accepted;
+            document.getElementById('optRejected').innerText = t.rejected;
+
+            // CMS text block translations
+            document.getElementById('txtCmsTitle').innerText = t.cmsTitle;
+            document.getElementById('txtCmsDesc').innerText = t.cmsDesc;
+            document.getElementById('lblContentKey').innerText = t.lblKey;
+            document.getElementById('lblContentRu').innerText = t.lblRu;
+            document.getElementById('lblContentDe').innerText = t.lblDe;
+            document.getElementById('lblContentEn').innerText = t.lblEn;
+            document.getElementById('btnSaveText').innerText = t.btnSave;
+
+            updateServicesDropdown(lang);
+
+            if (allBookings.length > 0) {
+                filterTable();
+            }
+        }
+
+        function getTranslatedService(serviceName, lang) {
+            if (!serviceName) return '';
+            const found = servicesMapping.find(s => s.keys.includes(serviceName) || s.de === serviceName || s.en === serviceName || s.ru === serviceName);
+            if (found) {
+                return found[lang] || found.de;
+            }
+            return serviceName;
+        }
+
+        function updateServicesDropdown(lang) {
+            const serviceSelect = document.getElementById('filterService');
+            const currentSelectedValue = serviceSelect.value;
+            
+            const t = translations[lang];
+            serviceSelect.innerHTML = `<option value="">${t.allServices}</option>`;
+
+            servicesMapping.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.de;
+                option.textContent = service[lang] || service.de;
+                if (service.de === currentSelectedValue) {
+                    option.selected = true;
+                }
+                serviceSelect.appendChild(option);
+            });
+        }
+
+        // Secure login handled via backend API request (No plain passwords in frontend code)
+        async function handleLogin(event) {
             event.preventDefault();
             const password = document.getElementById('adminPassword').value;
 
-            // Simple admin authentication check
-            if (password === 'admin') {
-                sessionStorage.setItem('kinderwoow_admin_auth', 'true');
-                showDashboard();
-            } else {
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    sessionStorage.setItem('kinderwoow_admin_auth', 'true');
+                    showDashboard();
+                } else {
+                    document.getElementById('loginError').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
                 document.getElementById('loginError').classList.remove('hidden');
             }
         }
 
-        // 2. Display Dashboard and fetch data
         function showDashboard() {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
+            
+            const savedLang = localStorage.getItem('kinderwoow_admin_lang') || 'en';
+            document.getElementById('langSelector').value = savedLang;
+            changeLanguage(savedLang);
+
             fetchBookings();
         }
 
-        // 3. Logout handler
         function logout() {
             sessionStorage.removeItem('kinderwoow_admin_auth');
             location.reload();
         }
 
-        // 4. Fetch all bookings from backend (Node.js API)
+        // Fetch all booking requests from backend
         async function fetchBookings() {
             try {
                 const response = await fetch('/api/bookings');
-                const bookings = await response.json();
-
-                const tbody = document.getElementById('bookingsTableBody');
-                const emptyState = document.getElementById('emptyState');
-                tbody.innerHTML = '';
-
-                if (!bookings || bookings.length === 0) {
-                    emptyState.classList.remove('hidden');
-                    return;
-                }
-
-                emptyState.classList.add('hidden');
-
-                // Render booking rows
-                bookings.forEach(booking => {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-white/5 transition";
-                    tr.innerHTML = `
-                        <td class="p-4 font-mono text-xs text-gray-500">#${booking.id}</td>
-                        <td class="p-4 font-bold text-white">${escapeHtml(booking.name)}</td>
-                        <td class="p-4 text-pink-400 font-semibold">${escapeHtml(booking.phone)}</td>
-                        <td class="p-4"><span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full font-bold border border-pink-500/30">${escapeHtml(booking.service)}</span></td>
-                        <td class="p-4 text-yellow-400 font-bold">${escapeHtml(booking.date)}</td>
-                        <td class="p-4 text-xs max-w-xs truncate">${escapeHtml(booking.message || '-')}</td>
-                        <td class="p-4 text-xs text-gray-500">${new Date(booking.created_at).toLocaleString()}</td>
-                        <td class="p-4 text-center">
-                            <button onclick="deleteBooking(${booking.id})" class="bg-rose-500/20 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 p-2 rounded-lg transition">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+                allBookings = await response.json();
+                filterTable();
             } catch (error) {
                 console.error('Error fetching bookings:', error);
                 alert('Failed to load bookings from server.');
             }
         }
 
-        // 5. Delete booking request
-        async function deleteBooking(id) {
-            if (!confirm(`Are you sure you want to delete booking #${id}?`)) return;
+        // Save updated site content via CMS API
+        async function saveSiteContent(event) {
+            event.preventDefault();
+            const payload = {
+                key: document.getElementById('contentKey').value.trim(),
+                ru: document.getElementById('contentRu').value.trim(),
+                de: document.getElementById('contentDe').value.trim(),
+                en: document.getElementById('contentEn').value.trim()
+            };
 
             try {
-                const response = await fetch(`/api/bookings/${id}`, {
-                    method: 'DELETE'
+                const response = await fetch('/api/admin/content', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
-
-                if (response.ok) {
-                    fetchBookings();
+                const result = await response.json();
+                if (result.success) {
+                    alert('✅ Text successfully saved and updated on the website!');
                 } else {
-                    alert('Failed to delete booking.');
+                    alert('❌ Save error: ' + (result.error || 'unknown'));
                 }
             } catch (error) {
-                console.error('Error deleting booking:', error);
+                console.error('Network error:', error);
                 alert('Connection to server failed.');
             }
         }
 
-        // Helper function to sanitize user inputs
+        function filterTable() {
+            const fClient = document.getElementById('filterClient').value.toLowerCase().trim();
+            const fPhone = document.getElementById('filterPhone').value.toLowerCase().trim();
+            const fService = document.getElementById('filterService').value.trim();
+            const fDateFrom = document.getElementById('filterDateFrom').value;
+            const fDateTil = document.getElementById('filterDateTil').value;
+            const fStatus = document.getElementById('filterStatus').value.toLowerCase().trim();
+
+            const filtered = allBookings.filter(booking => {
+                const bookingStatus = (booking.status || 'pending').toLowerCase().trim();
+                
+                const matchClient = (booking.name || '').toLowerCase().includes(fClient);
+                const matchPhone = (booking.phone || '').toLowerCase().includes(fPhone);
+                
+                let matchService = true;
+                if (fService !== "") {
+                    const mappedService = servicesMapping.find(s => s.de === fService);
+                    if (mappedService) {
+                        matchService = mappedService.keys.includes(booking.service) || booking.service === mappedService.de;
+                    } else {
+                        matchService = (booking.service || '') === fService;
+                    }
+                }
+                
+                const matchStatus = fStatus === "" || bookingStatus === fStatus;
+
+                let matchDate = true;
+                if (booking.date) {
+                    if (fDateFrom && booking.date < fDateFrom) matchDate = false;
+                    if (fDateTil && booking.date > fDateTil) matchDate = false;
+                }
+
+                return matchClient && matchPhone && matchService && matchDate && matchStatus;
+            });
+
+            renderTable(filtered);
+        }
+
+        function renderTable(bookings) {
+            const tbody = document.getElementById('bookingsTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const totalBadge = document.getElementById('totalBadge');
+            
+            tbody.innerHTML = '';
+            totalBadge.innerText = `Total: ${bookings.length}`;
+
+            if (!bookings || bookings.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            const currentLang = localStorage.getItem('kinderwoow_admin_lang') || 'en';
+            const t = translations[currentLang];
+
+            bookings.forEach(booking => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+
+                if (!booking.is_read) {
+                    tr.style.backgroundColor = 'rgba(245, 158, 11, 0.08)';
+                }
+
+                const translatedServiceName = getTranslatedService(booking.service, currentLang);
+
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-white">${escapeHtml(booking.name)}</td>
+                    <td class="p-4 text-pink-400 font-semibold">${escapeHtml(booking.phone)}</td>
+                    <td class="p-4"><span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full font-bold border border-pink-500/30">${escapeHtml(translatedServiceName)}</span></td>
+                    <td class="p-4 text-yellow-400 font-bold">${escapeHtml(booking.date)}</td>
+                    <td class="p-4 text-xs max-w-xs truncate">${escapeHtml(booking.message || '-')}</td>
+                    <td class="p-4">
+                        <select onchange="updateStatus(${booking.id}, this.value)" class="bg-[#0B0F19] border border-white/10 rounded-lg p-1.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                            <option value="pending" ${booking.status === 'pending' ? 'selected' : ''}>${t.pending}</option>
+                            <option value="accepted" ${booking.status === 'accepted' ? 'selected' : ''}>${t.accepted}</option>
+                            <option value="rejected" ${booking.status === 'rejected' ? 'selected' : ''}>${t.rejected}</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function updateStatus(id, newStatus) {
+            try {
+                const response = await fetch(`/api/bookings/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (response.ok) {
+                    const target = allBookings.find(b => b.id === id);
+                    if (target) {
+                        target.status = newStatus;
+                        target.is_read = 1;
+                    }
+                    filterTable();
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Failed to update status.');
+            }
+        }
+
         function escapeHtml(text) {
             if (!text) return '';
             return text
@@ -208,7 +542,7 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // Check authentication state on page load
+        // Check authentication on page load
         document.addEventListener('DOMContentLoaded', () => {
             const isAuth = sessionStorage.getItem('kinderwoow_admin_auth');
             if (isAuth === 'true') {

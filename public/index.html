@@ -6,6 +6,9 @@
   <title>KinderWoow Events</title>
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- FontAwesome icons for footer social & contact icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <!-- Styles for phone country code dropdown & flags -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
@@ -29,13 +32,13 @@
 
   <!-- HEADER SECTION -->
   <header class="sticky top-0 z-50 bg-[#0c0a1d]/90 backdrop-blur-md border-b border-pink-500/20">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
       <!-- Logo -->
-      <a href="#" class="flex flex-col items-start leading-none group">
-        <span class="text-3xl md:text-4xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 font-sans">
+      <a href="#" class="flex flex-col items-start leading-none group shrink-0">
+        <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 font-sans">
           KINDER<span class="text-pink-500">WOOW</span>
         </span>
-        <span class="bg-gradient-to-r from-pink-600 to-pink-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase mt-0.5 shadow-md shadow-pink-500/30">
+        <span class="bg-gradient-to-r from-pink-600 to-pink-500 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full tracking-widest uppercase mt-0.5 shadow-md shadow-pink-500/30">
           ★ EVENTS ★
         </span>
       </a>
@@ -49,14 +52,14 @@
       </nav>
 
       <!-- Language Switcher & CTA Button -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
         
-        <!-- Custom Language Dropdown (Exact style from your picture) -->
+        <!-- Custom Language Dropdown -->
         <div class="relative">
-          <button type="button" onclick="toggleLangDropdown()" class="bg-slate-900 border border-pink-500/50 rounded-full px-4 py-1.5 flex items-center space-x-2 text-xs font-bold shadow-md shadow-pink-500/10 hover:bg-slate-800 transition focus:outline-none">
-            <span id="currentLangCode" class="text-white text-sm font-black">DE</span>
-            <span id="currentLangName" class="text-gray-400 text-[10px] uppercase font-semibold">Deutsch</span>
-            <svg class="w-3 h-3 text-pink-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+          <button type="button" onclick="toggleLangDropdown()" class="bg-slate-900 border border-pink-500/50 rounded-full px-2.5 sm:px-4 py-1.5 flex items-center space-x-1 sm:space-x-2 text-xs font-bold shadow-md shadow-pink-500/10 hover:bg-slate-800 transition focus:outline-none">
+            <span id="currentLangCode" class="text-white text-xs sm:text-sm font-black">DE</span>
+            <span id="currentLangName" class="hidden sm:inline text-gray-400 text-[10px] uppercase font-semibold">Deutsch</span>
+            <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-pink-400 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
           </button>
 
           <!-- Dropdown menu list -->
@@ -76,7 +79,7 @@
           </div>
         </div>
 
-        <a href="#booking" class="bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-white font-bold px-5 py-2.5 rounded-full shadow-lg shadow-pink-600/40 transform hover:-translate-y-0.5 transition uppercase text-xs tracking-wider" data-i18n="cta_button">
+        <a href="#booking" class="bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-white font-bold px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full shadow-lg shadow-pink-600/40 transform hover:-translate-y-0.5 transition uppercase text-[10px] sm:text-xs tracking-wider shrink-0" data-i18n="cta_button">
           JETZT ANFRAGEN
         </a>
       </div>
@@ -86,7 +89,7 @@
   <!-- HERO SECTION WITH BACKGROUND IMAGE -->
   <section id="hero" class="relative min-h-[85vh] bg-[#0c0a1d] text-white overflow-hidden flex items-center pt-8 pb-16">
     <div class="absolute inset-0 z-0">
-      <img src="/images/hero-banner.jpg" alt="KinderWoow Events Background" class="w-full h-full object-cover object-center opacity-40">
+      <img src="images/hero-banner.jpg" alt="KinderWoow Events Background" class="w-full h-full object-cover object-center opacity-40">
       <div class="absolute inset-0 bg-gradient-to-r from-[#0c0a1d] via-[#0c0a1d]/80 to-transparent"></div>
     </div>
 
@@ -132,35 +135,35 @@
   <section id="services" class="bg-white py-4 shadow-xl relative z-20 text-slate-800">
     <div class="max-w-7xl mx-auto px-4">
       <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-mascot" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">🐰</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_maskottchen">MASKOTTCHEN</span>
         </a>
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-show" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">🎪</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_shows">SHOWS</span>
         </a>
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-birthday" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">🎂</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_geburtstage">GEBURTSTAGE</span>
         </a>
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-foam" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">🫧</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_foam">SCHAUM PARTY</span>
         </a>
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-balloon" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">🎈</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_ballon">BALLONSHOWS</span>
         </a>
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-dj" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">🎵</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_musik">MUSIK & DJ</span>
         </a>
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-effects" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">✨</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_effects">EFFEKTE</span>
         </a>
-        <a href="#gallery" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
+        <a href="#gallery-faceart" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
           <span class="text-2xl mb-1 group-hover:scale-110 transition">🎨</span>
           <span class="text-[11px] font-extrabold uppercase tracking-tight" data-i18n="cat_schminken">SCHMINKEN</span>
         </a>
@@ -178,8 +181,8 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
         <!-- 1. Magic Show -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/show.jpg" alt="Zaubershow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-show" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/show.jpg" alt="Zaubershow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-yellow-400" data-i18n="show_magic_title">SHOW & MAGIE</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_magic_desc">Zaubershows und magische Momente für Kinder.</p>
@@ -187,8 +190,8 @@
         </div>
 
         <!-- 2. Balloon Show -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/balloon.jpg" alt="Ballonshow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-balloon" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/balloon.jpg" alt="Ballonshow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-pink-400" data-i18n="cat_ballon">BALLONSHOWS</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_balloon_desc">Kreative Ballonfiguren & Modellage.</p>
@@ -196,8 +199,8 @@
         </div>
 
         <!-- 3. Special Effects -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/effects.jpg" alt="Spezialeffekte" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-effects" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/effects.jpg" alt="Spezialeffekte" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-purple-400" data-i18n="cat_effects">SPEZIALEFFEKTE</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_effects_desc">Seifenblasen, Nebel & Funkenregen auf der Bühne.</p>
@@ -205,8 +208,8 @@
         </div>
 
         <!-- 4. DJ & Music -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/dj.jpg" alt="DJ & Musik" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-dj" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/dj.jpg" alt="DJ & Musik" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-amber-400" data-i18n="cat_musik">DJ & MUSIK</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_dj_desc">Kinder-Disco, professioneller Sound & DJ.</p>
@@ -214,8 +217,8 @@
         </div>
 
         <!-- 5. Birthday Parties -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/birthday.jpg" alt="Geburtstage" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-birthday" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/birthday.jpg" alt="Geburtstage" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-rose-400" data-i18n="cat_geburtstage">GEBURTSTAGE</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_birthday_desc">Unvergessliche Kindergeburtstage & Torten-Momente.</p>
@@ -223,8 +226,8 @@
         </div>
 
         <!-- 6. Foam Party -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/foam.jpg" alt="Schaum Party" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-foam" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/foam.jpg" alt="Schaum Party" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-sky-400" data-i18n="cat_foam">SCHAUM PARTY</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_foam_desc">Riesiger Schaumspaß für Outdoor-Events.</p>
@@ -232,8 +235,8 @@
         </div>
 
         <!-- 7. Mascots & Characters -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/mascot.jpg" alt="Maskottchen" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-mascot" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/mascot.jpg" alt="Maskottchen" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-red-500" data-i18n="show_mascot_title">MASCOTTCHEN & HELDEN</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_mascot_desc">Lieblingshelden & Maskottchen-Shows.</p>
@@ -241,8 +244,8 @@
         </div>
 
         <!-- 8. Face Art -->
-        <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300">
-          <img src="/images/faceart.jpg" alt="Faceart" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        <div id="gallery-faceart" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+          <img src="images/faceart.jpg" alt="Faceart" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-emerald-400" data-i18n="cat_schminken">KINDERSCHMINKEN</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_faceart_desc">Bunter Aquadruck & professioneller Faceart.</p>
@@ -313,25 +316,114 @@
     </div>
   </section>
 
+  <!-- FOOTER SECTION -->
+  <footer class="bg-[#080615] text-gray-300 pt-16 pb-12 border-t border-pink-500/20 relative z-20">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      
+      <!-- Col 1: Logo & Description -->
+      <div class="space-y-4">
+        <a href="#" class="flex flex-col items-start leading-none group">
+          <span class="text-3xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500">
+            KINDER<span class="text-pink-500">WOOW</span>
+          </span>
+          <span class="bg-gradient-to-r from-pink-600 to-pink-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase mt-1 shadow-md shadow-pink-500/30">
+            ★ EVENTS ★
+          </span>
+        </a>
+        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="footer_desc">
+          Unvergessliche Momente, Shows und Lachen für Kinder bei jedem Event!
+        </p>
+        
+        <!-- Social Icons -->
+        <div class="flex items-center space-x-3 pt-2">
+          <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-pink-500 hover:border-pink-500 transition text-white">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-pink-500 hover:border-pink-500 transition text-white">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-pink-500 hover:border-pink-500 transition text-white">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation / Links -->
+      <div class="space-y-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-yellow-400" data-i18n="footer_nav_title">Navigation</h4>
+        <ul class="space-y-2.5 text-xs font-semibold">
+          <li><a href="#hero" class="hover:text-pink-400 transition" data-i18n="nav_home">Startseite</a></li>
+          <li><a href="#services" class="hover:text-pink-400 transition" data-i18n="nav_services">Unsere Services</a></li>
+          <li><a href="#gallery" class="hover:text-pink-400 transition" data-i18n="nav_gallery">Galerie</a></li>
+          <li><a href="#booking" class="hover:text-pink-400 transition" data-i18n="nav_contact">Kontakt</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Services List -->
+      <div class="space-y-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-pink-400" data-i18n="footer_services_title">Highlights</h4>
+        <ul class="space-y-2.5 text-xs text-gray-400">
+          <li><a href="#gallery-balloon" class="hover:text-white transition">Ballonshow</a></li>
+          <li><a href="#gallery-show" class="hover:text-white transition">Show & Magie</a></li>
+          <li><a href="#gallery-foam" class="hover:text-white transition">Schaum Party</a></li>
+          <li><a href="#gallery-mascot" class="hover:text-white transition">Maskottchen & Helden</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Contacts -->
+      <div class="space-y-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-yellow-400" data-i18n="footer_contact_title">Kontakt</h4>
+        <ul class="space-y-3 text-xs text-gray-400">
+          <li class="flex items-start gap-2.5">
+            <i class="fa-solid fa-location-dot text-pink-500 mt-0.5"></i>
+            <span>Baku, Azerbaijan</span>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <i class="fa-solid fa-phone text-pink-500"></i>
+            <a href="tel:+994500000000" class="hover:text-white transition">+994 (50) 000-00-00</a>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <i class="fa-solid fa-envelope text-pink-500"></i>
+            <a href="mailto:info@kinderwoow.com" class="hover:text-white transition">info@kinderwoow.com</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom Copyright Line -->
+    <div class="max-w-7xl mx-auto px-4 mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-500">
+      <p>© 2026 KinderWoow Events. All rights reserved.</p>
+      <div class="flex space-x-4 mt-2 sm:mt-0">
+        <span class="text-pink-500 font-bold">kinderwoow.de</span>
+      </div>
+    </div>
+  </footer>
+
   <!-- JAVASCRIPT LOGIC -->
   <script>
     let phoneInput;
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", async function() {
       const input = document.querySelector("#phone");
+      
+      // Initialize phone input with Azerbaijan set as default country
       phoneInput = window.intlTelInput(input, {
-        initialCountry: "auto",
+        initialCountry: "az",
+        preferredCountries: ["az", "de", "ru"],
         separateDialCode: true,
-        geoIpLookup: function(callback) {
-          fetch("https://ipapi.co/json/")
-            .then(res => res.json())
-            .then(data => callback(data.country_code))
-            .catch(() => callback("de"));
-        },
         utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
       });
 
-      // Close dropdown when clicking outside
+      // Automatically remove leading zero when typing (e.g., 050 -> 50)
+      input.addEventListener('input', function() {
+        let val = input.value.trim();
+        if (val.startsWith('0')) {
+          input.value = val.substring(1);
+        }
+      });
+
+      // Close language dropdown when clicking outside
       window.addEventListener('click', function(e) {
         const dropdown = document.getElementById('langDropdown');
         const button = dropdown.previousElementSibling;
@@ -339,6 +431,33 @@
           dropdown.classList.add('hidden');
         }
       });
+
+      // Load dynamic CMS texts from database on page load
+      try {
+        const response = await fetch('/api/content');
+        const content = await response.json();
+        
+        const currentLang = localStorage.getItem('kinderwoow_lang') || 'de';
+
+        if (content.hero_line1 && content.hero_line1[currentLang]) {
+          const titleEl = document.getElementById('heroTitle');
+          if (titleEl) {
+            titleEl.innerHTML = `${content.hero_line1[currentLang]}<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]">KINDER NIE VERGESSEN.</span>`;
+          }
+        }
+
+        if (content.hero_desc && content.hero_desc[currentLang]) {
+          const descEl = document.querySelector('[data-i18n="hero_desc"]');
+          if (descEl) descEl.textContent = content.hero_desc[currentLang];
+        }
+
+        if (content.footer_desc && content.footer_desc[currentLang]) {
+          const footerDescEl = document.querySelector('[data-i18n="footer_desc"]');
+          if (footerDescEl) footerDescEl.textContent = content.footer_desc[currentLang];
+        }
+      } catch (error) {
+        console.error('Failed to load dynamic CMS content:', error);
+      }
     });
 
     function toggleLangDropdown() {
@@ -398,7 +517,11 @@
         opt_effects: "Spezialeffekte",
         opt_schminken: "Kinderschminken",
         btn_submit: "RESERVIERUNG ABSENDEN",
-        msg_success: "🎉 Ihre Anfrage wurde erfolgreich gesendet!"
+        msg_success: "🎉 Ihre Anfrage wurde erfolgreich gesendet!",
+        footer_desc: "Unvergessliche Momente, Shows und Lachen für Kinder bei jedem Event!",
+        footer_nav_title: "Navigation",
+        footer_services_title: "Highlights",
+        footer_contact_title: "Kontakt"
       },
       ru: {
         hero_line1: "МОМЕНТЫ, КОТОРЫЕ",
@@ -451,7 +574,11 @@
         opt_effects: "Спецэффекты",
         opt_schminken: "Аквагрим",
         btn_submit: "ОТПРАВИТЬ ЗАЯВКУ",
-        msg_success: "🎉 Ваша заявка успешно отправлена!"
+        msg_success: "🎉 Ваша заявка успешно отправлена!",
+        footer_desc: "Незабываемые моменты, шоу и смех для детей на каждом празднике!",
+        footer_nav_title: "Навигация",
+        footer_services_title: "Шоу и услуги",
+        footer_contact_title: "Контакты"
       },
       en: {
         hero_line1: "MOMENTS THAT",
@@ -504,7 +631,11 @@
         opt_effects: "Special Effects",
         opt_schminken: "Face Art",
         btn_submit: "SEND BOOKING",
-        msg_success: "🎉 Your booking request has been sent successfully!"
+        msg_success: "🎉 Your booking request has been sent successfully!",
+        footer_desc: "Unforgettable moments, shows and laughter for kids at every event!",
+        footer_nav_title: "Navigation",
+        footer_services_title: "Highlights",
+        footer_contact_title: "Contact"
       }
     };
 
@@ -515,9 +646,9 @@
     };
 
     function setLanguage(lang) {
+      localStorage.setItem('kinderwoow_lang', lang);
       const dict = translations[lang] || translations.de;
       
-      // Update custom dropdown button text
       document.getElementById('currentLangCode').textContent = lang.toUpperCase();
       document.getElementById('currentLangName').textContent = langNames[lang];
       document.getElementById('langDropdown').classList.add('hidden');
