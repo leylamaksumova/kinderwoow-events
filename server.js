@@ -41,7 +41,9 @@ const ALLOWED_SERVICES = [
     'Аквагрим',
 ];
 
-const LIMITS = { name: 100, phone: 25, message: 1000 };
+const LIMITS = { name: 100, phone: 25, message: 1000, contentText: 2000 };
+
+const BOOKING_STATUSES = ['pending', 'accepted', 'rejected'];
 
 const app = express();
 
@@ -72,7 +74,20 @@ async function initDatabase() {
         service VARCHAR(100) NOT NULL,
         event_date DATE NOT NULL,
         message VARCHAR(${LIMITS.message}) NOT NULL DEFAULT '',
+        status VARCHAR(20) NOT NULL DEFAULT 'pending',
+        is_read BOOLEAN NOT NULL DEFAULT FALSE,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )`);
+    // Columns added after the first release (no-op if they already exist)
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS status VARCHAR(20) NOT NULL DEFAULT 'pending'`);
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS is_read BOOLEAN NOT NULL DEFAULT FALSE`);
+
+    // CMS table for editable site texts (one row per text, in three languages)
+    await pool.query(`CREATE TABLE IF NOT EXISTS site_content (
+        section_key VARCHAR(64) PRIMARY KEY,
+        ru TEXT NOT NULL DEFAULT '',
+        de TEXT NOT NULL DEFAULT '',
+        en TEXT NOT NULL DEFAULT ''
     )`);
     console.log('📦 Connected to PostgreSQL, bookings table is ready.');
 }
@@ -276,7 +291,7 @@ app.get('/api/admin/session', requireAdmin, (req, res) => {
 app.get('/api/bookings', requireAdmin, async (req, res, next) => {
     try {
         const { rows } = await pool.query(
-            `SELECT id, name, phone, service, to_char(event_date, 'YYYY-MM-DD') AS date, message, created_at
+            `SELECT id, name, phone, service, to_char(event_date, 'YYYY-MM-DD') AS date, message, status, is_read, created_at
              FROM bookings ORDER BY id DESC`
         );
         res.json(rows);
@@ -317,7 +332,32 @@ app.post('/api/bookings', bookingLimiter, async (req, res, next) => {
     }
 });
 
-// 3. Delete a booking (admin only)
+// 3. Update booking status (admin only)
+app.patch('/api/bookings/:id/status', requireAdmin, async (req, res, next) => {
+    const { id } = req.params;
+    const status = req.body && req.body.status;
+    if (!/^\d{1,9}$/.test(id)) {
+        return res.status(400).json({ error: 'Invalid booking id.' });
+    }
+    if (!BOOKING_STATUSES.includes(status)) {
+        return res.status(400).json({ error: 'Invalid status.' });
+    }
+
+    try {
+        const result = await pool.query(
+            'UPDATE bookings SET status = $1, is_read = TRUE WHERE id = $2',
+            [status, Number(id)]
+        );
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Booking not found.' });
+        }
+        res.json({ success: true });
+    } catch (err) {
+        next(err);
+    }
+});
+
+// 4. Delete a booking (admin only)
 app.delete('/api/bookings/:id', requireAdmin, async (req, res, next) => {
     const { id } = req.params;
     if (!/^\d{1,9}$/.test(id)) {
@@ -330,6 +370,49 @@ app.delete('/api/bookings/:id', requireAdmin, async (req, res, next) => {
             return res.status(404).json({ error: 'Booking not found.' });
         }
         res.json({ success: true, deletedID: Number(id) });
+    } catch (err) {
+        next(err);
+    }
+});
+
+// 5. Get editable site texts (public, used by the website)
+app.get('/api/content', async (req, res, next) => {
+    try {
+        const { rows } = await pool.query('SELECT section_key, ru, de, en FROM site_content');
+        const content = {};
+        rows.forEach((row) => {
+            content[row.section_key] = { ru: row.ru, de: row.de, en: row.en };
+        });
+        res.json(content);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// 6. Save or update a site text (admin only)
+app.post('/api/admin/content', requireAdmin, async (req, res, next) => {
+    const body = req.body || {};
+    const key = typeof body.key === 'string' ? body.key.trim() : '';
+    if (!/^[a-z0-9_]{1,64}$/.test(key)) {
+        return res.status(400).json({ error: 'Key may only contain lowercase letters, digits and "_".' });
+    }
+
+    const texts = {};
+    for (const lang of ['ru', 'de', 'en']) {
+        const value = typeof body[lang] === 'string' ? body[lang].trim() : '';
+        if (value.length > LIMITS.contentText) {
+            return res.status(400).json({ error: `Text must be at most ${LIMITS.contentText} characters.` });
+        }
+        texts[lang] = value;
+    }
+
+    try {
+        await pool.query(
+            `INSERT INTO site_content (section_key, ru, de, en) VALUES ($1, $2, $3, $4)
+             ON CONFLICT (section_key) DO UPDATE SET ru = EXCLUDED.ru, de = EXCLUDED.de, en = EXCLUDED.en`,
+            [key, texts.ru, texts.de, texts.en]
+        );
+        res.json({ success: true });
     } catch (err) {
         next(err);
     }
