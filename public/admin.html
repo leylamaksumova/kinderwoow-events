@@ -107,17 +107,31 @@
 
     <!-- SCRIPTS -->
     <script>
-        // 1. Password authorization handler
-        function handleLogin(event) {
+        // 1. Password authorization handler (the password is checked on the server)
+        async function handleLogin(event) {
             event.preventDefault();
             const password = document.getElementById('adminPassword').value;
+            const loginError = document.getElementById('loginError');
 
-            // Simple admin authentication check
-            if (password === 'admin') {
-                sessionStorage.setItem('kinderwoow_admin_auth', 'true');
-                showDashboard();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const result = await response.json().catch(() => ({}));
+
+                if (response.ok) {
+                    loginError.classList.add('hidden');
+                    document.getElementById('adminPassword').value = '';
+                    showDashboard();
+                } else {
+                    loginError.textContent = result.error || 'Invalid password!';
+                    loginError.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Connection to server failed.');
             }
         }
 
@@ -128,16 +142,30 @@
             fetchBookings();
         }
 
+        // Session expired or missing: go back to the login screen
+        function showLogin() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
+        }
+
         // 3. Logout handler
-        function logout() {
-            sessionStorage.removeItem('kinderwoow_admin_auth');
-            location.reload();
+        async function logout() {
+            try {
+                await fetch('/api/admin/logout', { method: 'POST' });
+            } finally {
+                location.reload();
+            }
         }
 
         // 4. Fetch all bookings from backend (Node.js API)
         async function fetchBookings() {
             try {
                 const response = await fetch('/api/bookings');
+                if (response.status === 401) {
+                    showLogin();
+                    return;
+                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const bookings = await response.json();
 
                 const tbody = document.getElementById('bookingsTableBody');
@@ -188,8 +216,11 @@
 
                 if (response.ok) {
                     fetchBookings();
+                } else if (response.status === 401) {
+                    showLogin();
                 } else {
-                    alert('Failed to delete booking.');
+                    const result = await response.json().catch(() => ({}));
+                    alert(result.error || 'Failed to delete booking.');
                 }
             } catch (error) {
                 console.error('Error deleting booking:', error);
@@ -200,7 +231,7 @@
         // Helper function to sanitize user inputs
         function escapeHtml(text) {
             if (!text) return '';
-            return text
+            return String(text)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
@@ -208,11 +239,13 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // Check authentication state on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const isAuth = sessionStorage.getItem('kinderwoow_admin_auth');
-            if (isAuth === 'true') {
-                showDashboard();
+        // Check authentication state on page load (asks the server, not sessionStorage)
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/admin/session');
+                if (response.ok) showDashboard();
+            } catch (error) {
+                console.error('Session check failed:', error);
             }
         });
     </script>
