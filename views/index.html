@@ -6,7 +6,7 @@
   <title>{{TITLE}}</title>
   {{SEO_HEAD}}
   <link rel="preload" as="image" href="/images/hero-banner.webp" fetchpriority="high">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/site.css">
   
   <!-- FontAwesome icons for footer social & contact icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -341,16 +341,8 @@
         </p>
         
         <!-- Social Icons -->
-        <div class="flex items-center space-x-3 pt-2">
-          <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-pink-500 hover:border-pink-500 transition text-white">
-            <i class="fa-brands fa-instagram"></i>
-          </a>
-          <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-pink-500 hover:border-pink-500 transition text-white">
-            <i class="fa-brands fa-tiktok"></i>
-          </a>
-          <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-pink-500 hover:border-pink-500 transition text-white">
-            <i class="fa-brands fa-whatsapp"></i>
-          </a>
+        <!-- Social links are added by the server, only for links filled in the admin text editor (group "Contact") -->
+        <div class="flex items-center space-x-3 pt-2">{{SOCIAL_LINKS}}
         </div>
       </div>
 

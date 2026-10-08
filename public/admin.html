@@ -5,22 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>KinderWoow - Admin Panel & CMS</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandDark: '#0B0F19',
-                        brandBlue: '#1E1B4B',
-                        brandPink: '#EC4899',
-                        brandYellow: '#F59E0B',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="/css/site.css">
     <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -661,7 +646,7 @@
                     const option = document.createElement('option');
                     option.value = key;
                     const edited = savedContent[key] ? '✏️ ' : '';
-                    option.textContent = edited + shorten(currentText(key, lang));
+                    option.textContent = edited + (shorten(currentText(key, lang)) || key);
                     optgroup.appendChild(option);
                 });
                 select.appendChild(optgroup);

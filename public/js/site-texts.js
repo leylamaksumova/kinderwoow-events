@@ -64,6 +64,9 @@ window.SITE_TEXTS = {
     contact_address: "Deutschland",
     contact_phone: "+49 000 0000000",
     contact_email: "info@kinderwoow.com",
+    contact_instagram: "",
+    contact_tiktok: "",
+    contact_whatsapp: "",
     footer_rights: "© 2026 KinderWoow Events. Alle Rechte vorbehalten.",
     msg_error: "Fehler: ",
     msg_connection_failed: "Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es erneut."
@@ -129,6 +132,9 @@ window.SITE_TEXTS = {
     contact_address: "Германия",
     contact_phone: "+49 000 0000000",
     contact_email: "info@kinderwoow.com",
+    contact_instagram: "",
+    contact_tiktok: "",
+    contact_whatsapp: "",
     footer_rights: "© 2026 KinderWoow Events. Все права защищены.",
     msg_error: "Ошибка: ",
     msg_connection_failed: "Не удалось связаться с сервером. Попробуйте ещё раз."
@@ -194,6 +200,9 @@ window.SITE_TEXTS = {
     contact_address: "Germany",
     contact_phone: "+49 000 0000000",
     contact_email: "info@kinderwoow.com",
+    contact_instagram: "",
+    contact_tiktok: "",
+    contact_whatsapp: "",
     footer_rights: "© 2026 KinderWoow Events. All rights reserved.",
     msg_error: "Error: ",
     msg_connection_failed: "Connection to the server failed. Please try again."

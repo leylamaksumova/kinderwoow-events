@@ -275,6 +275,7 @@ function seoHead(lang, t, baseUrl) {
         email: t.contact_email,
         address: { '@type': 'PostalAddress', addressCountry: 'DE' },
         areaServed: 'DE',
+        sameAs: SOCIAL_NETWORKS.map(({ key }) => String(t[key] || '').trim()).filter((url) => url.startsWith('https://')),
     };
 
     return `<meta name="description" content="${escapeHtml(t.meta_description)}">
@@ -292,6 +293,24 @@ function seoHead(lang, t, baseUrl) {
   <script type="application/ld+json">${jsonForScript(business)}</script>`;
 }
 
+const SOCIAL_NETWORKS = [
+    { key: 'contact_instagram', icon: 'fa-instagram', label: 'Instagram' },
+    { key: 'contact_tiktok', icon: 'fa-tiktok', label: 'TikTok' },
+    { key: 'contact_whatsapp', icon: 'fa-whatsapp', label: 'WhatsApp' },
+];
+
+// Icons only for the social links filled in the admin panel (and only real https:// addresses)
+function socialLinks(t) {
+    return SOCIAL_NETWORKS
+        .map(({ key, icon, label }) => ({ url: String(t[key] || '').trim(), icon, label }))
+        .filter(({ url }) => /^https:\/\/[^\s"<>]+$/.test(url))
+        .map(({ url, icon, label }) => `
+          <a href="${escapeHtml(url)}" target="_blank" rel="noopener" aria-label="${label}" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-pink-500 hover:border-pink-500 transition text-white">
+            <i class="fa-brands ${icon}"></i>
+          </a>`)
+        .join('');
+}
+
 function renderPage(lang, content, baseUrl) {
     const t = pageTexts(lang, content);
     const tokens = {
@@ -303,6 +322,7 @@ function renderPage(lang, content, baseUrl) {
         HOME_URL: LANG_PATHS[lang],
         TEL: escapeHtml(String(t.contact_phone).replace(/\(0\)/g, '').replace(/[^\d+]/g, '')),
         EMAIL: escapeHtml(t.contact_email),
+        SOCIAL_LINKS: socialLinks(t),
         CLIENT_TEXTS: jsonForScript({ msg_error: t.msg_error, msg_connection_failed: t.msg_connection_failed }),
     };
 

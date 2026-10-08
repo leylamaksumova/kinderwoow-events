@@ -25,6 +25,18 @@ canonical and `hreflang` links. `/sitemap.xml` and `/robots.txt` are generated a
 - The SEO title/description and the contact address, phone and e-mail can be edited in the
   admin panel (text editor → "SEO" and "Contact").
 - Images in `public/images` are WebP, max. 1200px wide (hero 1920px). Please keep new images small too.
+- Social icons (Instagram, TikTok, WhatsApp) appear in the footer only after their link is filled in the
+  admin text editor (group "Contact"). Links must start with `https://`, e.g. `https://wa.me/49151...` for WhatsApp.
+
+## Styles (Tailwind CSS)
+
+The pages use a prebuilt stylesheet `public/css/site.css` (no Tailwind CDN script, so pages load faster).
+After adding or changing Tailwind classes in `views/index.html`, `public/admin.html` or `server.js`, rebuild it
+and commit the result:
+
+```
+npm run build:css
+```
 
 ## Admin panel
 
