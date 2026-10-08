@@ -10,7 +10,29 @@ Website and booking backend for KinderWoow events (Node.js + Express + PostgreSQ
 4. Start the server: `npm run dev` (reads `.env`), then open http://localhost:3000.
    The admin panel is at http://localhost:3000/admin.html.
 
-The `bookings` table is created automatically on first start.
+All tables are created automatically on first start. On the very first start the server also
+creates an admin account: username `ADMIN_USERNAME` (default `admin`), password `ADMIN_PASSWORD`.
+After that, accounts are managed in the admin panel (section "Users") and `ADMIN_PASSWORD` is no longer used.
+
+## Languages and SEO
+
+Each language has its own URL, rendered on the server so search engines can index all of them:
+`/` (German, default), `/ru/` and `/en/`. Every page has its own `<title>`, meta description,
+canonical and `hreflang` links. `/sitemap.xml` and `/robots.txt` are generated automatically.
+
+- Page template: `views/index.html`. Elements with `data-i18n="key"` get their text from
+  `public/js/site-texts.js`, or from the admin text editor if the text was changed there.
+- The SEO title/description and the contact address, phone and e-mail can be edited in the
+  admin panel (text editor → "SEO" and "Contact").
+- Images in `public/images` are WebP, max. 1200px wide (hero 1920px). Please keep new images small too.
+
+## Admin panel
+
+- Every person logs in with their own username and password.
+- Roles: **Administrator** (can also add/delete users, reset passwords and see the activity log)
+  and **Staff** (bookings and site texts).
+- The activity log records logins, booking status changes, deletions, text changes and user changes, with who and when.
+- The booking list shows when each request was received and who last changed its status.
 
 ## Environment variables
 
@@ -18,11 +40,14 @@ The `bookings` table is created automatically on first start.
 | --- | --- | --- |
 | `DATABASE_URL` | yes | PostgreSQL connection string |
 | `DATABASE_SSL` | no | `true` if the database requires SSL |
-| `ADMIN_PASSWORD` | yes | Password for the admin panel |
+| `ADMIN_USERNAME` | no | Username of the first admin account (default `admin`) |
+| `ADMIN_PASSWORD` | first start | Password of the first admin account (only used while there are no admin users) |
 | `SESSION_SECRET` | yes | Long random string used to sign admin sessions |
 | `GMAIL_USER` | no | Gmail address that sends notifications |
 | `GMAIL_APP_PASSWORD` | no | Gmail App Password (emails are disabled if missing) |
 | `NOTIFY_EMAIL` | no | Recipient of notifications (defaults to `GMAIL_USER`) |
+| `SITE_URL` | recommended | Public address of the site, e.g. `https://kinderwoow.de` (used for canonical links and the sitemap) |
+| `BUSINESS_TIMEZONE` | no | Timezone for "today" when checking booking dates (default `Europe/Berlin`) |
 | `NODE_ENV` | no | Set to `production` on the live server |
 
 ## Deploying on Render
@@ -39,6 +64,14 @@ The `bookings` table is created automatically on first start.
 | `POST` | `/api/bookings` | public, rate limited (5 requests / 15 min per IP) |
 | `GET` | `/api/bookings` | admin only |
 | `DELETE` | `/api/bookings/:id` | admin only |
+| `PATCH` | `/api/bookings/:id/status` | admin only |
+| `GET` | `/api/content` | public |
+| `GET`/`POST` | `/api/admin/content` | admin only |
 | `POST` | `/api/admin/login` | public, rate limited |
 | `POST` | `/api/admin/logout` | public |
 | `GET` | `/api/admin/session` | admin only |
+| `POST` | `/api/admin/password` | admin only (own password) |
+| `GET`/`POST` | `/api/admin/users` | administrators only |
+| `PATCH` | `/api/admin/users/:id/password` | administrators only |
+| `DELETE` | `/api/admin/users/:id` | administrators only |
+| `GET` | `/api/admin/audit` | administrators only |

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="de" class="scroll-smooth">
+<html lang="{{LANG}}" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KinderWoow Events</title>
+  <title>{{TITLE}}</title>
+  {{SEO_HEAD}}
+  <link rel="preload" as="image" href="/images/hero-banner.webp" fetchpriority="high">
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- FontAwesome icons for footer social & contact icons -->
@@ -34,7 +36,7 @@
   <header class="sticky top-0 z-50 bg-[#0c0a1d]/90 backdrop-blur-md border-b border-pink-500/20">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
       <!-- Logo -->
-      <a href="#" class="flex flex-col items-start leading-none group shrink-0">
+      <a href="{{HOME_URL}}" class="flex flex-col items-start leading-none group shrink-0">
         <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 font-sans">
           KINDER<span class="text-pink-500">WOOW</span>
         </span>
@@ -57,25 +59,25 @@
         <!-- Custom Language Dropdown -->
         <div class="relative">
           <button type="button" onclick="toggleLangDropdown()" class="bg-slate-900 border border-pink-500/50 rounded-full px-2.5 sm:px-4 py-1.5 flex items-center space-x-1 sm:space-x-2 text-xs font-bold shadow-md shadow-pink-500/10 hover:bg-slate-800 transition focus:outline-none">
-            <span id="currentLangCode" class="text-white text-xs sm:text-sm font-black">DE</span>
-            <span id="currentLangName" class="hidden sm:inline text-gray-400 text-[10px] uppercase font-semibold">Deutsch</span>
+            <span id="currentLangCode" class="text-white text-xs sm:text-sm font-black">{{LANG_CODE}}</span>
+            <span id="currentLangName" class="hidden sm:inline text-gray-400 text-[10px] uppercase font-semibold">{{LANG_NAME}}</span>
             <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-pink-400 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
           </button>
 
           <!-- Dropdown menu list -->
           <div id="langDropdown" class="hidden absolute right-0 mt-2 w-36 bg-slate-900 border border-pink-500/30 rounded-2xl shadow-xl overflow-hidden z-50 backdrop-blur-md">
-            <div onclick="setLanguage('de')" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition">
+            <a href="/" hreflang="de" lang="de" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition">
               <span class="font-black text-white text-xs">DE</span>
               <span class="text-gray-400 text-[10px] uppercase">Deutsch</span>
-            </div>
-            <div onclick="setLanguage('ru')" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition border-t border-white/5">
+            </a>
+            <a href="/ru/" hreflang="ru" lang="ru" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition border-t border-white/5">
               <span class="font-black text-white text-xs">RU</span>
               <span class="text-gray-400 text-[10px] uppercase">Русский</span>
-            </div>
-            <div onclick="setLanguage('en')" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition border-t border-white/5">
+            </a>
+            <a href="/en/" hreflang="en" lang="en" class="px-4 py-2.5 hover:bg-pink-600/20 cursor-pointer flex items-center justify-between transition border-t border-white/5">
               <span class="font-black text-white text-xs">EN</span>
               <span class="text-gray-400 text-[10px] uppercase">English</span>
-            </div>
+            </a>
           </div>
         </div>
 
@@ -89,17 +91,15 @@
   <!-- HERO SECTION WITH BACKGROUND IMAGE -->
   <section id="hero" class="relative min-h-[85vh] bg-[#0c0a1d] text-white overflow-hidden flex items-center pt-8 pb-16">
     <div class="absolute inset-0 z-0">
-      <img src="images/hero-banner.jpg" alt="KinderWoow Events Background" class="w-full h-full object-cover object-center opacity-40">
+      <img src="/images/hero-banner.webp" alt="KinderWoow Events" width="1920" height="920" fetchpriority="high" decoding="async" class="w-full h-full object-cover object-center opacity-40">
       <div class="absolute inset-0 bg-gradient-to-r from-[#0c0a1d] via-[#0c0a1d]/80 to-transparent"></div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 w-full">
       <div class="lg:col-span-7 space-y-6">
-        <h1 id="heroTitle" class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.1]">
-          MOMENTE, DIE<br>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]">
-            KINDER NIE VERGESSEN.
-          </span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.1]">
+          <span data-i18n="hero_line1">MOMENTE, DIE</span><br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]" data-i18n="hero_line2">KINDER NIE VERGESSEN.</span>
         </h1>
 
         <p class="text-gray-300 text-lg max-w-lg leading-relaxed" data-i18n="hero_desc">
@@ -182,7 +182,7 @@
         
         <!-- 1. Magic Show -->
         <div id="gallery-show" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/show.jpg" alt="Zaubershow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/show.webp" alt="Zaubershow" data-i18n-alt="show_magic_title" width="1024" height="1024" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-yellow-400" data-i18n="show_magic_title">SHOW & MAGIE</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_magic_desc">Zaubershows und magische Momente für Kinder.</p>
@@ -191,7 +191,7 @@
 
         <!-- 2. Balloon Show -->
         <div id="gallery-balloon" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/balloon.jpg" alt="Ballonshow" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/balloon.webp" alt="Ballonshow" data-i18n-alt="cat_ballon" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-pink-400" data-i18n="cat_ballon">BALLONSHOWS</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_balloon_desc">Kreative Ballonfiguren & Modellage.</p>
@@ -200,7 +200,7 @@
 
         <!-- 3. Special Effects -->
         <div id="gallery-effects" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/effects.jpg" alt="Spezialeffekte" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/effects.webp" alt="Spezialeffekte" data-i18n-alt="cat_effects" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-purple-400" data-i18n="cat_effects">SPEZIALEFFEKTE</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_effects_desc">Seifenblasen, Nebel & Funkenregen auf der Bühne.</p>
@@ -209,7 +209,7 @@
 
         <!-- 4. DJ & Music -->
         <div id="gallery-dj" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/dj.jpg" alt="DJ & Musik" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/dj.webp" alt="DJ & Musik" data-i18n-alt="cat_musik" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-amber-400" data-i18n="cat_musik">DJ & MUSIK</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_dj_desc">Kinder-Disco, professioneller Sound & DJ.</p>
@@ -218,7 +218,7 @@
 
         <!-- 5. Birthday Parties -->
         <div id="gallery-birthday" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/birthday.jpg" alt="Geburtstage" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/birthday.webp" alt="Geburtstage" data-i18n-alt="cat_geburtstage" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-rose-400" data-i18n="cat_geburtstage">GEBURTSTAGE</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_birthday_desc">Unvergessliche Kindergeburtstage & Torten-Momente.</p>
@@ -227,7 +227,7 @@
 
         <!-- 6. Foam Party -->
         <div id="gallery-foam" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/foam.jpg" alt="Schaum Party" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/foam.webp" alt="Schaum Party" data-i18n-alt="cat_foam" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-sky-400" data-i18n="cat_foam">SCHAUM PARTY</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_foam_desc">Riesiger Schaumspaß für Outdoor-Events.</p>
@@ -236,7 +236,7 @@
 
         <!-- 7. Mascots & Characters -->
         <div id="gallery-mascot" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/mascot.jpg" alt="Maskottchen" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/mascot.webp" alt="Maskottchen" data-i18n-alt="show_mascot_title" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-red-500" data-i18n="show_mascot_title">MASCOTTCHEN & HELDEN</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_mascot_desc">Lieblingshelden & Maskottchen-Shows.</p>
@@ -245,7 +245,7 @@
 
         <!-- 8. Face Art -->
         <div id="gallery-faceart" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
-          <img src="images/faceart.jpg" alt="Faceart" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+          <img src="/images/faceart.webp" alt="Faceart" data-i18n-alt="cat_schminken" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-emerald-400" data-i18n="cat_schminken">KINDERSCHMINKEN</h3>
             <p class="text-xs text-gray-300 mt-1" data-i18n="show_faceart_desc">Bunter Aquadruck & professioneller Faceart.</p>
@@ -298,14 +298,14 @@
           <div>
             <label class="block text-xs font-bold uppercase text-gray-300 mb-1" data-i18n="lbl_service">SERVICE</label>
             <select id="service" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
-              <option value="Маскоты и персонажи" data-i18n="opt_maskottchen">Maskottchen & Helden Show</option>
-              <option value="Шоу фокусов и магии" data-i18n="opt_show">Zaubershow & Magie</option>
-              <option value="Детский день рождения" data-i18n="opt_geburtstag">Kindergeburtstag</option>
-              <option value="Пенная вечеринка" data-i18n="opt_foam">Schaum Party</option>
-              <option value="Шар шоу" data-i18n="opt_ballon">Ballonshow</option>
-              <option value="Диджей и музыка" data-i18n="opt_musik">DJ & Musik</option>
-              <option value="Спецэффекты" data-i18n="opt_effects">Spezialeffekte</option>
-              <option value="Аквагрим" data-i18n="opt_schminken">Kinderschminken</option>
+              <option value="mascot" data-i18n="opt_maskottchen">Maskottchen & Helden Show</option>
+              <option value="magic" data-i18n="opt_show">Zaubershow & Magie</option>
+              <option value="birthday" data-i18n="opt_geburtstag">Kindergeburtstag</option>
+              <option value="foam" data-i18n="opt_foam">Schaum Party</option>
+              <option value="balloon" data-i18n="opt_ballon">Ballonshow</option>
+              <option value="dj" data-i18n="opt_musik">DJ & Musik</option>
+              <option value="effects" data-i18n="opt_effects">Spezialeffekte</option>
+              <option value="facepaint" data-i18n="opt_schminken">Kinderschminken</option>
             </select>
           </div>
 
@@ -328,7 +328,7 @@
       
       <!-- Col 1: Logo & Description -->
       <div class="space-y-4">
-        <a href="#" class="flex flex-col items-start leading-none group">
+        <a href="{{HOME_URL}}" class="flex flex-col items-start leading-none group">
           <span class="text-3xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500">
             KINDER<span class="text-pink-500">WOOW</span>
           </span>
@@ -369,10 +369,10 @@
       <div class="space-y-4">
         <h4 class="text-xs font-black uppercase tracking-wider text-pink-400" data-i18n="footer_services_title">Highlights</h4>
         <ul class="space-y-2.5 text-xs text-gray-400">
-          <li><a href="#gallery-balloon" class="hover:text-white transition">Ballonshow</a></li>
-          <li><a href="#gallery-show" class="hover:text-white transition">Show & Magie</a></li>
-          <li><a href="#gallery-foam" class="hover:text-white transition">Schaum Party</a></li>
-          <li><a href="#gallery-mascot" class="hover:text-white transition">Maskottchen & Helden</a></li>
+          <li><a href="#gallery-balloon" class="hover:text-white transition" data-i18n="opt_ballon">Ballonshow</a></li>
+          <li><a href="#gallery-show" class="hover:text-white transition" data-i18n="opt_show">Show & Magie</a></li>
+          <li><a href="#gallery-foam" class="hover:text-white transition" data-i18n="opt_foam">Schaum Party</a></li>
+          <li><a href="#gallery-mascot" class="hover:text-white transition" data-i18n="opt_maskottchen">Maskottchen & Helden</a></li>
         </ul>
       </div>
 
@@ -382,15 +382,15 @@
         <ul class="space-y-3 text-xs text-gray-400">
           <li class="flex items-start gap-2.5">
             <i class="fa-solid fa-location-dot text-pink-500 mt-0.5"></i>
-            <span>Baku, Azerbaijan</span>
+            <span data-i18n="contact_address">Deutschland</span>
           </li>
           <li class="flex items-center gap-2.5">
             <i class="fa-solid fa-phone text-pink-500"></i>
-            <a href="tel:+994500000000" class="hover:text-white transition">+994 (50) 000-00-00</a>
+            <a href="tel:{{TEL}}" class="hover:text-white transition" data-i18n="contact_phone">+49 000 0000000</a>
           </li>
           <li class="flex items-center gap-2.5">
             <i class="fa-solid fa-envelope text-pink-500"></i>
-            <a href="mailto:info@kinderwoow.com" class="hover:text-white transition">info@kinderwoow.com</a>
+            <a href="mailto:{{EMAIL}}" class="hover:text-white transition" data-i18n="contact_email">info@kinderwoow.com</a>
           </li>
         </ul>
       </div>
@@ -399,7 +399,7 @@
 
     <!-- Bottom Copyright Line -->
     <div class="max-w-7xl mx-auto px-4 mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-500">
-      <p>© 2026 KinderWoow Events. All rights reserved.</p>
+      <p data-i18n="footer_rights">© 2026 KinderWoow Events. Alle Rechte vorbehalten.</p>
       <div class="flex space-x-4 mt-2 sm:mt-0">
         <span class="text-pink-500 font-bold">kinderwoow.de</span>
       </div>
@@ -407,19 +407,20 @@
   </footer>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/site-texts.js"></script>
+  <!-- Page texts are filled in by the server for each language (/, /ru/, /en/); these are the few the script needs -->
+  <script>window.PAGE_TEXTS = {{CLIENT_TEXTS}};</script>
   <script>
     let phoneInput;
 
-    document.addEventListener("DOMContentLoaded", async function() {
+    document.addEventListener("DOMContentLoaded", function() {
       const input = document.querySelector("#phone");
       
-      // Initialize phone input with Azerbaijan set as default country
+      // Initialize phone input with Germany set as default country
       // (wrapped so a CDN failure doesn't stop the rest of the page from loading)
       try {
         phoneInput = window.intlTelInput(input, {
-          initialCountry: "az",
-          preferredCountries: ["az", "de", "ru"],
+          initialCountry: "de",
+          preferredCountries: ["de", "at", "ch"],
           separateDialCode: true,
           utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
         });
@@ -427,7 +428,7 @@
         console.error('Phone input failed to load:', error);
       }
 
-      // Automatically remove leading zero when typing (e.g., 050 -> 50)
+      // Automatically remove the leading zero when typing (e.g., 0151 -> 151), the country code replaces it
       input.addEventListener('input', function() {
         let val = input.value.trim();
         if (val.startsWith('0')) {
@@ -443,72 +444,11 @@
           dropdown.classList.add('hidden');
         }
       });
-
-      // Load texts edited in the admin panel (CMS) and let them override the defaults
-      try {
-        const response = await fetch('/api/content');
-        if (response.ok) applyCmsContent(await response.json());
-      } catch (error) {
-        console.error('Failed to load dynamic CMS content:', error);
-      }
-
-      setLanguage(localStorage.getItem('kinderwoow_lang') || 'de');
     });
-
-    // content = { key: { ru, de, en } } from /api/content
-    function applyCmsContent(content) {
-      Object.keys(content).forEach(key => {
-        ['de', 'ru', 'en'].forEach(lang => {
-          const text = content[key][lang];
-          if (text && translations[lang]) translations[lang][key] = text;
-        });
-      });
-    }
 
     function toggleLangDropdown() {
       const dropdown = document.getElementById('langDropdown');
       dropdown.classList.toggle('hidden');
-    }
-
-    const translations = window.SITE_TEXTS;
-
-    const langNames = {
-      de: "Deutsch",
-      ru: "Русский",
-      en: "English"
-    };
-
-    function setLanguage(lang) {
-      localStorage.setItem('kinderwoow_lang', lang);
-      const dict = translations[lang] || translations.de;
-      
-      document.getElementById('currentLangCode').textContent = lang.toUpperCase();
-      document.getElementById('currentLangName').textContent = langNames[lang];
-      document.getElementById('langDropdown').classList.add('hidden');
-
-      const titleEl = document.getElementById('heroTitle');
-      if (titleEl && dict.hero_line1 && dict.hero_line2) {
-        // Built with textContent so texts from the CMS can't inject HTML
-        const secondLine = document.createElement('span');
-        secondLine.className = 'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]';
-        secondLine.textContent = dict.hero_line2;
-        titleEl.textContent = dict.hero_line1;
-        titleEl.append(document.createElement('br'), secondLine);
-      }
-
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key]) {
-          el.textContent = dict[key];
-        }
-      });
-
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (dict[key]) {
-          el.setAttribute('placeholder', dict[key]);
-        }
-      });
     }
 
     // Don't let users pick a date in the past (the server validates this as well)
@@ -547,11 +487,11 @@
           event.target.reset();
           setTimeout(() => successMsg.classList.add('hidden'), 5000);
         } else {
-          alert('Error: ' + (result.error || 'Failed to submit'));
+          alert(window.PAGE_TEXTS.msg_error + (result.error || 'Failed to submit'));
         }
       } catch (error) {
         console.error('Network error:', error);
-        alert('Connection to server failed.');
+        alert(window.PAGE_TEXTS.msg_connection_failed);
       }
     }
   </script>
