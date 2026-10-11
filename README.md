@@ -62,6 +62,22 @@ npm run build:css
 | `BUSINESS_TIMEZONE` | no | Timezone for "today" when checking booking dates (default `Europe/Berlin`) |
 | `NODE_ENV` | no | Set to `production` on the live server |
 
+## Deploying on your own server (DigitalOcean droplet, Ubuntu 24.04)
+
+1. Point the domain to the server: DNS `A` records for `@` and `www` → the server's IP.
+2. Log in as root (`ssh root@<server-ip>`) and run the setup script once:
+   ```
+   curl -fsSL https://raw.githubusercontent.com/leylamaksumova/kinderwoow-events/main/deploy/setup.sh -o setup.sh
+   bash setup.sh kinderwoow.de you@example.com
+   ```
+   It installs Node.js 22, PostgreSQL, nginx and the firewall, creates the database with random passwords
+   (stored in `/etc/kinderwoow.env`), runs the site as the `kinderwoow` systemd service and gets a free
+   Let's Encrypt HTTPS certificate. The first admin password is printed once at the end.
+3. Put new code live after merging to `main`: `bash /opt/kinderwoow/deploy/update.sh`
+
+Useful commands: `systemctl status kinderwoow`, `journalctl -u kinderwoow -f` (logs),
+`nano /etc/kinderwoow.env` then `systemctl restart kinderwoow` (settings, e.g. Gmail notifications).
+
 ## Deploying on Render
 
 1. Create a PostgreSQL database in Render and copy its **Internal Database URL**.
