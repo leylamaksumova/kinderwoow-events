@@ -37,7 +37,7 @@
     <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
       <!-- Logo -->
       <a href="{{HOME_URL}}" class="flex flex-col items-start leading-none group shrink-0">
-        <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 font-sans">
+        <span class="text-xl min-[380px]:text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 font-sans">
           KINDER<span class="text-pink-500">WOOW</span>
         </span>
         <span class="bg-gradient-to-r from-pink-600 to-pink-500 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full tracking-widest uppercase mt-0.5 shadow-md shadow-pink-500/30">
@@ -46,7 +46,7 @@
       </a>
 
       <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold tracking-wide">
+      <nav class="hidden xl:flex items-center space-x-6 whitespace-nowrap text-sm font-semibold tracking-wide">
         <a href="#hero" class="text-white hover:text-pink-400 transition" data-i18n="nav_home">STARTSEITE</a>
         <a href="#services" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_services">UNSERE SERVICES</a>
         <a href="#gallery" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_gallery">GALERIE</a>
@@ -86,6 +86,14 @@
         </a>
       </div>
     </div>
+
+    <!-- Navigation Links (mobile) -->
+    <nav class="xl:hidden border-t border-white/5 flex items-center justify-between sm:justify-center gap-3 sm:gap-10 overflow-x-auto whitespace-nowrap px-4 py-2 text-[11px] font-semibold tracking-wide">
+      <a href="#hero" class="text-white hover:text-pink-400 transition" data-i18n="nav_home">STARTSEITE</a>
+      <a href="#services" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_services">UNSERE SERVICES</a>
+      <a href="#gallery" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_gallery">GALERIE</a>
+      <a href="#booking" class="text-gray-300 hover:text-pink-400 transition" data-i18n="nav_contact">KONTAKT</a>
+    </nav>
   </header>
 
   <!-- HERO SECTION WITH BACKGROUND IMAGE -->
@@ -132,7 +140,7 @@
   </section>
 
   <!-- CATEGORIES BAR -->
-  <section id="services" class="bg-white py-4 shadow-xl relative z-20 text-slate-800">
+  <section id="services" class="scroll-mt-32 bg-white py-4 shadow-xl relative z-20 text-slate-800">
     <div class="max-w-7xl mx-auto px-4">
       <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
         <a href="#gallery-mascot" class="p-3 rounded-xl hover:bg-pink-50 transition cursor-pointer flex flex-col items-center group">
@@ -172,7 +180,7 @@
   </section>
 
   <!-- SERVICES GALLERY -->
-  <section id="gallery" class="py-16 bg-[#0c0a1d]">
+  <section id="gallery" class="scroll-mt-32 py-16 bg-[#0c0a1d]">
     <div class="max-w-7xl mx-auto px-4">
       <h2 class="text-3xl sm:text-4xl font-black text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-rose-400" data-i18n="gallery_title">
         UNSERE HIGHLIGHTS & SHOWS
@@ -181,7 +189,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
         <!-- 1. Magic Show -->
-        <div id="gallery-show" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-show" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/show.webp" alt="Zaubershow" data-i18n-alt="show_magic_title" width="1024" height="1024" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-yellow-400" data-i18n="show_magic_title">SHOW & MAGIE</h3>
@@ -190,7 +198,7 @@
         </div>
 
         <!-- 2. Balloon Show -->
-        <div id="gallery-balloon" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-balloon" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/balloon.webp" alt="Ballonshow" data-i18n-alt="cat_ballon" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-pink-400" data-i18n="cat_ballon">BALLONSHOWS</h3>
@@ -199,7 +207,7 @@
         </div>
 
         <!-- 3. Special Effects -->
-        <div id="gallery-effects" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-effects" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/effects.webp" alt="Spezialeffekte" data-i18n-alt="cat_effects" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-purple-400" data-i18n="cat_effects">SPEZIALEFFEKTE</h3>
@@ -208,7 +216,7 @@
         </div>
 
         <!-- 4. DJ & Music -->
-        <div id="gallery-dj" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-dj" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/dj.webp" alt="DJ & Musik" data-i18n-alt="cat_musik" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-amber-400" data-i18n="cat_musik">DJ & MUSIK</h3>
@@ -217,7 +225,7 @@
         </div>
 
         <!-- 5. Birthday Parties -->
-        <div id="gallery-birthday" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-birthday" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/birthday.webp" alt="Geburtstage" data-i18n-alt="cat_geburtstage" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-rose-400" data-i18n="cat_geburtstage">GEBURTSTAGE</h3>
@@ -226,7 +234,7 @@
         </div>
 
         <!-- 6. Foam Party -->
-        <div id="gallery-foam" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-foam" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/foam.webp" alt="Schaum Party" data-i18n-alt="cat_foam" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-sky-400" data-i18n="cat_foam">SCHAUM PARTY</h3>
@@ -235,7 +243,7 @@
         </div>
 
         <!-- 7. Mascots & Characters -->
-        <div id="gallery-mascot" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-mascot" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/mascot.webp" alt="Maskottchen" data-i18n-alt="show_mascot_title" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-red-500" data-i18n="show_mascot_title">MASCOTTCHEN & HELDEN</h3>
@@ -244,7 +252,7 @@
         </div>
 
         <!-- 8. Face Art -->
-        <div id="gallery-faceart" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-24">
+        <div id="gallery-faceart" class="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-pink-500/50 transition duration-300 scroll-mt-32">
           <img src="/images/faceart.webp" alt="Faceart" data-i18n-alt="cat_schminken" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
           <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10">
             <h3 class="font-black text-lg text-emerald-400" data-i18n="cat_schminken">KINDERSCHMINKEN</h3>
@@ -257,7 +265,7 @@
   </section>
 
   <!-- BOOKING FORM SECTION -->
-  <section id="booking" class="py-16 bg-[#080615] border-t border-white/5">
+  <section id="booking" class="scroll-mt-32 py-16 bg-[#080615] border-t border-white/5">
     <div class="max-w-3xl mx-auto px-4">
       <div class="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl relative">
         <h2 class="text-3xl font-black text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-500" data-i18n="form_title">
