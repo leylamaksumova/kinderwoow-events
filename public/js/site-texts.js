@@ -1,8 +1,11 @@
 // Default website texts in all languages.
 // Shared by index.html (to render the site) and admin.html (CMS text editor).
 // Texts saved in the admin panel override these defaults.
+// The server (server.js) also reads this file to render each language page.
 window.SITE_TEXTS = {
   de: {
+    meta_title: "KinderWoow Events – Kinderanimation, Shows & Kindergeburtstage",
+    meta_description: "Kindergeburtstage, Zaubershows, Maskottchen, Schaumpartys, Ballonshows, Kinderschminken und DJ für Kinder-Events. Jetzt unverbindlich anfragen!",
     hero_line1: "MOMENTE, DIE",
     hero_line2: "KINDER NIE VERGESSEN.",
     nav_home: "STARTSEITE",
@@ -57,9 +60,20 @@ window.SITE_TEXTS = {
     footer_desc: "Unvergessliche Momente, Shows und Lachen für Kinder bei jedem Event!",
     footer_nav_title: "Navigation",
     footer_services_title: "Highlights",
-    footer_contact_title: "Kontakt"
+    footer_contact_title: "Kontakt",
+    contact_address: "Deutschland",
+    contact_phone: "+49 000 0000000",
+    contact_email: "info@kinderwoow.com",
+    contact_instagram: "",
+    contact_tiktok: "",
+    contact_whatsapp: "",
+    footer_rights: "© 2026 KinderWoow Events. Alle Rechte vorbehalten.",
+    msg_error: "Fehler: ",
+    msg_connection_failed: "Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es erneut."
   },
   ru: {
+    meta_title: "KinderWoow Events — детские праздники, шоу и аниматоры",
+    meta_description: "Детские дни рождения, шоу фокусов, ростовые куклы, пенные вечеринки, шоу шаров, аквагрим и диджей для детских праздников. Оставьте заявку!",
     hero_line1: "МОМЕНТЫ, КОТОРЫЕ",
     hero_line2: "ДЕТИ НИКОГДА НЕ ЗАБУДУТ.",
     nav_home: "ГЛАВНАЯ",
@@ -114,9 +128,20 @@ window.SITE_TEXTS = {
     footer_desc: "Незабываемые моменты, шоу и смех для детей на каждом празднике!",
     footer_nav_title: "Навигация",
     footer_services_title: "Шоу и услуги",
-    footer_contact_title: "Контакты"
+    footer_contact_title: "Контакты",
+    contact_address: "Германия",
+    contact_phone: "+49 000 0000000",
+    contact_email: "info@kinderwoow.com",
+    contact_instagram: "",
+    contact_tiktok: "",
+    contact_whatsapp: "",
+    footer_rights: "© 2026 KinderWoow Events. Все права защищены.",
+    msg_error: "Ошибка: ",
+    msg_connection_failed: "Не удалось связаться с сервером. Попробуйте ещё раз."
   },
   en: {
+    meta_title: "KinderWoow Events – Kids Party Entertainment, Shows & Birthdays",
+    meta_description: "Kids birthday parties, magic shows, mascots, foam parties, balloon shows, face painting and DJ for children's events. Send us a request!",
     hero_line1: "MOMENTS THAT",
     hero_line2: "KIDS WILL NEVER FORGET.",
     nav_home: "HOME",
@@ -171,6 +196,28 @@ window.SITE_TEXTS = {
     footer_desc: "Unforgettable moments, shows and laughter for kids at every event!",
     footer_nav_title: "Navigation",
     footer_services_title: "Highlights",
-    footer_contact_title: "Contact"
+    footer_contact_title: "Contact",
+    contact_address: "Germany",
+    contact_phone: "+49 000 0000000",
+    contact_email: "info@kinderwoow.com",
+    contact_instagram: "",
+    contact_tiktok: "",
+    contact_whatsapp: "",
+    footer_rights: "© 2026 KinderWoow Events. All rights reserved.",
+    msg_error: "Error: ",
+    msg_connection_failed: "Connection to the server failed. Please try again."
   }
 };
+
+// Bookable services: "code" is what gets stored in the database,
+// "textKey" is the SITE_TEXTS key with the service name in each language.
+window.SERVICE_OPTIONS = [
+  { code: "mascot", textKey: "opt_maskottchen" },
+  { code: "magic", textKey: "opt_show" },
+  { code: "birthday", textKey: "opt_geburtstag" },
+  { code: "foam", textKey: "opt_foam" },
+  { code: "balloon", textKey: "opt_ballon" },
+  { code: "dj", textKey: "opt_musik" },
+  { code: "effects", textKey: "opt_effects" },
+  { code: "facepaint", textKey: "opt_schminken" }
+];

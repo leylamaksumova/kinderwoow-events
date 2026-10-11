@@ -3,23 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>KinderWoow - Admin Panel & CMS</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandDark: '#0B0F19',
-                        brandBlue: '#1E1B4B',
-                        brandPink: '#EC4899',
-                        brandYellow: '#F59E0B',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="/css/site.css">
     <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -35,15 +21,19 @@
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
+                    <label id="lblUsername" class="block text-xs font-semibold text-gray-300 mb-2">Username</label>
+                    <input type="text" id="adminUsername" required autocomplete="username" autocapitalize="none" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-pink-500 transition">
+                </div>
+                <div>
                     <label id="lblPassword" class="block text-xs font-semibold text-gray-300 mb-2">Password</label>
-                    <input type="password" id="adminPassword" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-pink-500 transition" placeholder="Enter admin password">
+                    <input type="password" id="adminPassword" required autocomplete="current-password" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-pink-500 transition">
                 </div>
                 <button type="submit" id="btnLogin" class="w-full bg-gradient-to-r from-pink-500 to-yellow-500 font-bold py-3 rounded-xl shadow-lg hover:scale-[1.01] transition uppercase tracking-wider text-xs">
                     Login
                 </button>
             </form>
             <div id="loginError" class="hidden text-xs text-rose-500 text-center font-bold">
-                Invalid password!
+                Invalid username or password!
             </div>
         </div>
     </div>
@@ -58,6 +48,7 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <span class="hidden sm:flex items-center gap-1.5 text-xs text-gray-300"><i class="fa-solid fa-user text-pink-400"></i> <span id="currentUserName"></span></span>
                 <!-- LANGUAGE SELECTOR (EN, DE, RU) -->
                 <select id="langSelector" onchange="changeLanguage(this.value)" class="bg-[#1E1B4B] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-pink-500 font-bold">
                     <option value="en">🇬🇧 EN</option>
@@ -130,6 +121,7 @@
                         <table class="w-full text-left text-sm text-gray-300">
                             <thead class="bg-white/5 text-xs text-gray-400 uppercase tracking-wider border-b border-white/10">
                                 <tr>
+                                    <th id="thReceived" class="p-4">Received</th>
                                     <th id="thClient" class="p-4">Client</th>
                                     <th id="thPhone" class="p-4">Phone</th>
                                     <th id="thService" class="p-4">Service</th>
@@ -191,97 +183,256 @@
                 </form>
             </div>
 
+            <!-- SECTION 3: MY ACCOUNT -->
+            <div class="bg-[#1E1B4B] border border-white/10 rounded-2xl p-6 shadow-2xl space-y-4">
+                <h3 id="txtAccountTitle" class="text-xl font-black text-yellow-400">🔑 My Account</h3>
+                <form onsubmit="changeOwnPassword(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    <div>
+                        <label id="lblCurrentPassword" class="block text-xs font-bold text-gray-300 mb-1">Current password</label>
+                        <input type="password" id="currentPassword" required autocomplete="current-password" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="lblNewPassword" class="block text-xs font-bold text-gray-300 mb-1">New password (min. 8 characters)</label>
+                        <input type="password" id="newPassword" required minlength="8" autocomplete="new-password" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <button type="submit" id="btnChangePassword" class="bg-white/10 hover:bg-white/20 font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition">Change password</button>
+                </form>
+            </div>
+
+            <!-- SECTION 4: USERS (administrators only) -->
+            <div id="usersSection" class="hidden bg-[#1E1B4B] border border-white/10 rounded-2xl p-6 shadow-2xl space-y-4">
+                <div>
+                    <h3 id="txtUsersTitle" class="text-xl font-black text-yellow-400">👥 Users</h3>
+                    <p id="txtUsersDesc" class="text-xs text-gray-400 mt-0.5">Everyone logs in with their own username and password, so the activity log shows who changed what.</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-white/5 text-xs text-gray-400 uppercase tracking-wider border-b border-white/10">
+                            <tr>
+                                <th id="thUsername" class="p-3">Username</th>
+                                <th id="thRole" class="p-3">Role</th>
+                                <th id="thLastLogin" class="p-3">Last login</th>
+                                <th class="p-3"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+                <form onsubmit="createUser(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end pt-2">
+                    <div>
+                        <label id="lblNewUsername" class="block text-xs font-bold text-gray-300 mb-1">Username</label>
+                        <input type="text" id="newUsername" required minlength="3" maxlength="50" pattern="[A-Za-z0-9._\-]+" autocomplete="off" autocapitalize="none" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="lblNewUserPassword" class="block text-xs font-bold text-gray-300 mb-1">Password (min. 8 characters)</label>
+                        <input type="password" id="newUserPassword" required minlength="8" autocomplete="new-password" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="lblNewUserRole" class="block text-xs font-bold text-gray-300 mb-1">Role</label>
+                        <select id="newUserRole" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+                            <option value="staff" id="optRoleStaff">Staff</option>
+                            <option value="admin" id="optRoleAdmin">Administrator</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="btnAddUser" class="bg-gradient-to-r from-yellow-500 to-pink-500 text-slate-950 font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:opacity-90 transition">+ Add user</button>
+                </form>
+            </div>
+
+            <!-- SECTION 5: ACTIVITY LOG (administrators only) -->
+            <div id="auditSection" class="hidden bg-[#1E1B4B] border border-white/10 rounded-2xl p-6 shadow-2xl space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h3 id="txtAuditTitle" class="text-xl font-black text-yellow-400">📜 Activity Log</h3>
+                        <p id="txtAuditDesc" class="text-xs text-gray-400 mt-0.5">Who changed what in the admin panel (last 300 actions).</p>
+                    </div>
+                    <button onclick="fetchAuditLog()" class="bg-white/10 hover:bg-white/20 text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> <span id="txtAuditRefresh">Refresh</span>
+                    </button>
+                </div>
+                <div class="overflow-x-auto max-h-[480px] overflow-y-auto">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-white/5 text-gray-400 uppercase tracking-wider border-b border-white/10 sticky top-0">
+                            <tr>
+                                <th id="thAuditTime" class="p-3">Time</th>
+                                <th id="thAuditUser" class="p-3">User</th>
+                                <th id="thAuditAction" class="p-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditTableBody" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <!-- SCRIPTS -->
     <script src="/js/site-texts.js"></script>
     <script>
-        let allBookings = []; 
+        let allBookings = [];
+        let currentUser = null;
 
-        // Services dictionary for multi-language support
-        const servicesMapping = [
-            { keys: ["Maskottchen & Helden Show", "Mascot & Heroes Show", "Шоу талисманов и героев"], de: "Maskottchen & Helden Show", en: "Mascot & Heroes Show", ru: "Шоу талисманов и героев" },
-            { keys: ["Zaubershow & Magie", "Magic & Illusion Show", "Шоу фокусов и магии"], de: "Zaubershow & Magie", en: "Magic & Illusion Show", ru: "Шоу фокусов и магии" },
-            { keys: ["Kindergeburtstag", "Children's Birthday", "День рождения ребенка"], de: "Kindergeburtstag", en: "Children's Birthday", ru: "День рождения ребенка" },
-            { keys: ["Schaum Party", "Foam Party", "Пенная вечеринка"], de: "Schaum Party", en: "Foam Party", ru: "Пенная вечеринка" },
-            { keys: ["Ballonshow", "Balloon Show", "Шоу воздушных шаров"], de: "Ballonshow", en: "Balloon Show", ru: "Шоу воздушных шаров" },
-            { keys: ["DJ & Musik", "DJ & Music", "Диджей и музыка"], de: "DJ & Musik", en: "DJ & Music", ru: "Диджей и музыка" },
-            { keys: ["Spezialeffekte", "Special Effects", "Спецэффекты"], de: "Spezialeffekte", en: "Special Effects", ru: "Спецэффекты" },
-            { keys: ["Kinderschminken", "Face Painting", "Аквагрим"], de: "Kinderschminken", en: "Face Painting", ru: "Аквагрим" }
-        ];
+        // Times are shown in the business timezone
+        const BUSINESS_TIMEZONE = 'Europe/Berlin';
+        const DATE_LOCALES = { en: 'en-GB', de: 'de-DE', ru: 'ru-RU' };
 
         // Admin panel translations (EN, DE, RU)
         const translations = {
             en: {
-                loginTitle: "Admin Authorization", passwordLabel: "Password", loginBtn: "Login", invalidPass: "Invalid password!",
+                loginTitle: "Admin Authorization", usernameLabel: "Username", passwordLabel: "Password", loginBtn: "Login", invalidPass: "Invalid username or password!",
                 adminBadge: "Admin Panel", logout: "Logout", bookingRequests: "Booking Requests",
                 manageDesc: "Manage client requests submitted via website form.", refreshData: "Refresh Data",
                 filterClient: "Search Client", filterPhone: "Search Phone", filterService: "Search Service",
                 filterFrom: "Date From", filterTil: "Date Til", filterStatus: "Filter Status",
-                thClient: "Client", thPhone: "Phone", thService: "Service", thDate: "Event Date",
+                thReceived: "Received", thClient: "Client", thPhone: "Phone", thService: "Service", thDate: "Event Date",
                 thMessage: "Message", thStatus: "Status", noBookings: "No bookings found",
                 newRequests: "New requests submitted by clients will appear here.",
-                allServices: "All Services", allStatuses: "All Statuses",
+                allServices: "All Services", allStatuses: "All Statuses", total: "Total",
                 pending: "⏳ Pending", accepted: "✅ Accepted", rejected: "❌ Rejected",
+                changedBy: "by",
                 cmsTitle: "✏️ Website Text Editor (CMS)",
                 cmsDesc: "Edit main texts on the website for all languages.",
                 lblKey: "Which text do you want to change?",
                 btnReset: "↺ Restore original text",
                 statusEdited: "✏️ This text was changed in the admin panel.",
+                statusEditedBy: "✏️ Changed by {user}, {date}.",
                 statusDefault: "This is the original website text.",
                 savedOk: "✅ Text saved! Reload the website to see it.",
                 lblRu: "🇷🇺 Russian Text (RU)",
                 lblDe: "🇩🇪 German Text (DE)",
                 lblEn: "🇬🇧 English Text (EN)",
-                btnSave: "💾 Save Changes on Website"
+                btnSave: "💾 Save Changes on Website",
+                accountTitle: "🔑 My Account", currentPassword: "Current password",
+                newPassword: "New password (min. 8 characters)", changePassword: "Change password",
+                passwordChanged: "✅ Password changed.",
+                usersTitle: "👥 Users",
+                usersDesc: "Everyone logs in with their own username and password, so the activity log shows who changed what.",
+                thUsername: "Username", thRole: "Role", thLastLogin: "Last login",
+                newUserPassword: "Password (min. 8 characters)", role: "Role", addUser: "+ Add user",
+                roleStaff: "Staff", roleAdmin: "Administrator", never: "never", you: "you",
+                resetPassword: "Reset password", deleteUser: "Delete",
+                resetPasswordPrompt: "New password for {user} (min. 8 characters):",
+                confirmDeleteUser: "Delete user {user}? They will no longer be able to log in.",
+                userCreated: "✅ User created.", passwordReset: "✅ Password reset.",
+                auditTitle: "📜 Activity Log", auditDesc: "Who changed what in the admin panel (last 300 actions).",
+                auditRefresh: "Refresh", thAuditTime: "Time", thAuditUser: "User", thAuditAction: "Action",
+                actLogin: "Logged in", actLoginFailed: "Failed login attempt", actLogout: "Logged out",
+                actBookingStatus: "Changed booking status", actBookingDelete: "Deleted booking",
+                actContent: "Changed website text", actPasswordChange: "Changed own password",
+                actUserCreate: "Created user", actUserDelete: "Deleted user", actUserPasswordReset: "Reset password of",
+                errorPrefix: "❌ Error: "
             },
             de: {
-                loginTitle: "Admin-Anmeldung", passwordLabel: "Passwort", loginBtn: "Anmelden", invalidPass: "Ungültiges Passwort!",
+                loginTitle: "Admin-Anmeldung", usernameLabel: "Benutzername", passwordLabel: "Passwort", loginBtn: "Anmelden", invalidPass: "Ungültiger Benutzername oder Passwort!",
                 adminBadge: "Admin-Bereich", logout: "Abmelden", bookingRequests: "Buchungsanfragen",
                 manageDesc: "Verwalten Sie Kundenanfragen aus dem Website-Formular.", refreshData: "Daten aktualisieren",
                 filterClient: "Kunde suchen", filterPhone: "Telefon suchen", filterService: "Dienst suchen",
                 filterFrom: "Datum von", filterTil: "Datum bis", filterStatus: "Status filtern",
-                thClient: "Kunde", thPhone: "Telefon", thService: "Dienstleistung", thDate: "Veranstaltungsdatum",
+                thReceived: "Eingegangen", thClient: "Kunde", thPhone: "Telefon", thService: "Dienstleistung", thDate: "Veranstaltungsdatum",
                 thMessage: "Nachricht", thStatus: "Status", noBookings: "Keine Buchungen gefunden",
                 newRequests: "Neue Kundenanfragen werden hier angezeigt.",
-                allServices: "Alle Dienste", allStatuses: "Alle Status",
+                allServices: "Alle Dienste", allStatuses: "Alle Status", total: "Gesamt",
                 pending: "⏳ Ausstehend", accepted: "✅ Angenommen", rejected: "❌ Abgelehnt",
+                changedBy: "von",
                 cmsTitle: "✏️ Website Texteditor (CMS)",
                 cmsDesc: "Bearbeiten Sie Haupttexte der Website für alle Sprachen.",
                 lblKey: "Welchen Text möchten Sie ändern?",
                 btnReset: "↺ Originaltext wiederherstellen",
                 statusEdited: "✏️ Dieser Text wurde im Admin-Bereich geändert.",
+                statusEditedBy: "✏️ Geändert von {user}, {date}.",
                 statusDefault: "Das ist der Originaltext der Website.",
                 savedOk: "✅ Text gespeichert! Laden Sie die Website neu, um ihn zu sehen.",
                 lblRu: "🇷🇺 Russischer Text (RU)",
                 lblDe: "🇩🇪 Deutscher Text (DE)",
                 lblEn: "🇬🇧 Englischer Text (EN)",
-                btnSave: "💾 Änderungen auf Website speichern"
+                btnSave: "💾 Änderungen auf Website speichern",
+                accountTitle: "🔑 Mein Konto", currentPassword: "Aktuelles Passwort",
+                newPassword: "Neues Passwort (mind. 8 Zeichen)", changePassword: "Passwort ändern",
+                passwordChanged: "✅ Passwort geändert.",
+                usersTitle: "👥 Benutzer",
+                usersDesc: "Jede Person meldet sich mit eigenem Benutzernamen und Passwort an, so zeigt das Protokoll, wer was geändert hat.",
+                thUsername: "Benutzername", thRole: "Rolle", thLastLogin: "Letzte Anmeldung",
+                newUserPassword: "Passwort (mind. 8 Zeichen)", role: "Rolle", addUser: "+ Benutzer hinzufügen",
+                roleStaff: "Mitarbeiter", roleAdmin: "Administrator", never: "nie", you: "Sie",
+                resetPassword: "Passwort zurücksetzen", deleteUser: "Löschen",
+                resetPasswordPrompt: "Neues Passwort für {user} (mind. 8 Zeichen):",
+                confirmDeleteUser: "Benutzer {user} löschen? Er kann sich dann nicht mehr anmelden.",
+                userCreated: "✅ Benutzer angelegt.", passwordReset: "✅ Passwort zurückgesetzt.",
+                auditTitle: "📜 Aktivitätsprotokoll", auditDesc: "Wer hat was im Admin-Bereich geändert (letzte 300 Aktionen).",
+                auditRefresh: "Aktualisieren", thAuditTime: "Zeit", thAuditUser: "Benutzer", thAuditAction: "Aktion",
+                actLogin: "Angemeldet", actLoginFailed: "Fehlgeschlagene Anmeldung", actLogout: "Abgemeldet",
+                actBookingStatus: "Buchungsstatus geändert", actBookingDelete: "Buchung gelöscht",
+                actContent: "Website-Text geändert", actPasswordChange: "Eigenes Passwort geändert",
+                actUserCreate: "Benutzer angelegt", actUserDelete: "Benutzer gelöscht", actUserPasswordReset: "Passwort zurückgesetzt für",
+                errorPrefix: "❌ Fehler: "
             },
             ru: {
-                loginTitle: "Авторизация администратора", passwordLabel: "Пароль", loginBtn: "Войти", invalidPass: "Неверный пароль!",
+                loginTitle: "Авторизация администратора", usernameLabel: "Имя пользователя", passwordLabel: "Пароль", loginBtn: "Войти", invalidPass: "Неверное имя пользователя или пароль!",
                 adminBadge: "Панель админа", logout: "Выйти", bookingRequests: "Заявки на бронирование",
                 manageDesc: "Управление заявками клиентов с формы сайта.", refreshData: "Обновить данные",
                 filterClient: "Поиск клиента", filterPhone: "Поиск телефона", filterService: "Поиск услуги",
                 filterFrom: "Дата с", filterTil: "Дата по", filterStatus: "Фильтр статуса",
-                thClient: "Клиент", thPhone: "Телефон", thService: "Услуга", thDate: "Дата мероприятия",
+                thReceived: "Получена", thClient: "Клиент", thPhone: "Телефон", thService: "Услуга", thDate: "Дата мероприятия",
                 thMessage: "Сообщение", thStatus: "Статус", noBookings: "Заявки не найдены",
                 newRequests: "Новые заявки от клиентов появятся здесь.",
-                allServices: "Все услуги", allStatuses: "Все статусы",
+                allServices: "Все услуги", allStatuses: "Все статусы", total: "Всего",
                 pending: "⏳ В ожидании", accepted: "✅ Принято", rejected: "❌ Отклонено",
+                changedBy: "изменил(а)",
                 cmsTitle: "✏️ Редактор текста сайта (CMS)",
                 cmsDesc: "Изменяйте тексты на главной странице для всех языков.",
                 lblKey: "Какой текст хотите изменить?",
                 btnReset: "↺ Вернуть исходный текст",
                 statusEdited: "✏️ Этот текст уже изменён через админку.",
+                statusEditedBy: "✏️ Изменил(а) {user}, {date}.",
                 statusDefault: "Это исходный текст сайта.",
                 savedOk: "✅ Текст сохранён! Обновите сайт, чтобы увидеть изменения.",
                 lblRu: "🇷🇺 Русский текст (RU)",
                 lblDe: "🇩🇪 Текст на немецком (DE)",
                 lblEn: "🇬🇧 Текст на английском (EN)",
-                btnSave: "💾 Сохранить изменения на сайте"
+                btnSave: "💾 Сохранить изменения на сайте",
+                accountTitle: "🔑 Мой аккаунт", currentPassword: "Текущий пароль",
+                newPassword: "Новый пароль (мин. 8 символов)", changePassword: "Сменить пароль",
+                passwordChanged: "✅ Пароль изменён.",
+                usersTitle: "👥 Пользователи",
+                usersDesc: "Каждый входит под своим именем и паролем, поэтому в журнале видно, кто что изменил.",
+                thUsername: "Имя пользователя", thRole: "Роль", thLastLogin: "Последний вход",
+                newUserPassword: "Пароль (мин. 8 символов)", role: "Роль", addUser: "+ Добавить пользователя",
+                roleStaff: "Сотрудник", roleAdmin: "Администратор", never: "никогда", you: "вы",
+                resetPassword: "Сбросить пароль", deleteUser: "Удалить",
+                resetPasswordPrompt: "Новый пароль для {user} (мин. 8 символов):",
+                confirmDeleteUser: "Удалить пользователя {user}? Он больше не сможет войти.",
+                userCreated: "✅ Пользователь создан.", passwordReset: "✅ Пароль сброшен.",
+                auditTitle: "📜 Журнал действий", auditDesc: "Кто что изменил в админке (последние 300 действий).",
+                auditRefresh: "Обновить", thAuditTime: "Время", thAuditUser: "Пользователь", thAuditAction: "Действие",
+                actLogin: "Вошёл в админку", actLoginFailed: "Неудачная попытка входа", actLogout: "Вышел из админки",
+                actBookingStatus: "Изменил статус заявки", actBookingDelete: "Удалил заявку",
+                actContent: "Изменил текст сайта", actPasswordChange: "Сменил свой пароль",
+                actUserCreate: "Создал пользователя", actUserDelete: "Удалил пользователя", actUserPasswordReset: "Сбросил пароль пользователя",
+                errorPrefix: "❌ Ошибка: "
             }
+        };
+
+        // Element id -> translation key
+        const TEXT_IDS = {
+            txtLoginTitle: 'loginTitle', lblUsername: 'usernameLabel', lblPassword: 'passwordLabel', btnLogin: 'loginBtn',
+            loginError: 'invalidPass', txtAdminBadge: 'adminBadge', txtLogout: 'logout',
+            txtBookingRequests: 'bookingRequests', txtManageDesc: 'manageDesc', txtRefresh: 'refreshData',
+            lblFilterClient: 'filterClient', lblFilterPhone: 'filterPhone', lblFilterService: 'filterService',
+            lblFilterFrom: 'filterFrom', lblFilterTil: 'filterTil', lblFilterStatus: 'filterStatus',
+            thReceived: 'thReceived', thClient: 'thClient', thPhone: 'thPhone', thService: 'thService',
+            thDate: 'thDate', thMessage: 'thMessage', thStatus: 'thStatus',
+            txtNoBookings: 'noBookings', txtNewRequests: 'newRequests',
+            optAllStatuses: 'allStatuses', optPending: 'pending', optAccepted: 'accepted', optRejected: 'rejected',
+            txtCmsTitle: 'cmsTitle', txtCmsDesc: 'cmsDesc', lblContentKey: 'lblKey',
+            lblContentRu: 'lblRu', lblContentDe: 'lblDe', lblContentEn: 'lblEn',
+            btnSaveText: 'btnSave', btnResetText: 'btnReset',
+            txtAccountTitle: 'accountTitle', lblCurrentPassword: 'currentPassword', lblNewPassword: 'newPassword',
+            btnChangePassword: 'changePassword',
+            txtUsersTitle: 'usersTitle', txtUsersDesc: 'usersDesc', thUsername: 'thUsername', thRole: 'thRole',
+            thLastLogin: 'thLastLogin', lblNewUsername: 'usernameLabel', lblNewUserPassword: 'newUserPassword',
+            lblNewUserRole: 'role', optRoleStaff: 'roleStaff', optRoleAdmin: 'roleAdmin', btnAddUser: 'addUser',
+            txtAuditTitle: 'auditTitle', txtAuditDesc: 'auditDesc', txtAuditRefresh: 'auditRefresh',
+            thAuditTime: 'thAuditTime', thAuditUser: 'thAuditUser', thAuditAction: 'thAuditAction'
         };
 
         // Change admin interface language
@@ -289,92 +440,96 @@
             localStorage.setItem('kinderwoow_admin_lang', lang);
             const t = translations[lang];
 
-            document.getElementById('txtLoginTitle').innerText = t.loginTitle;
-            document.getElementById('lblPassword').innerText = t.passwordLabel;
-            document.getElementById('btnLogin').innerText = t.loginBtn;
-            document.getElementById('loginError').innerText = t.invalidPass;
-            document.getElementById('txtAdminBadge').innerText = t.adminBadge;
-            document.getElementById('txtLogout').innerText = t.logout;
-            document.getElementById('txtBookingRequests').innerText = t.bookingRequests;
-            document.getElementById('txtManageDesc').innerText = t.manageDesc;
-            document.getElementById('txtRefresh').innerText = t.refreshData;
-            document.getElementById('lblFilterClient').innerText = t.filterClient;
-            document.getElementById('lblFilterPhone').innerText = t.filterPhone;
-            document.getElementById('lblFilterService').innerText = t.filterService;
-            document.getElementById('lblFilterFrom').innerText = t.filterFrom;
-            document.getElementById('lblFilterTil').innerText = t.filterTil;
-            document.getElementById('lblFilterStatus').innerText = t.filterStatus;
-            
-            document.getElementById('thClient').innerText = t.thClient;
-            document.getElementById('thPhone').innerText = t.thPhone;
-            document.getElementById('thService').innerText = t.thService;
-            document.getElementById('thDate').innerText = t.thDate;
-            document.getElementById('thMessage').innerText = t.thMessage;
-            document.getElementById('thStatus').innerText = t.thStatus;
-            
-            document.getElementById('txtNoBookings').innerText = t.noBookings;
-            document.getElementById('txtNewRequests').innerText = t.newRequests;
+            Object.entries(TEXT_IDS).forEach(([id, key]) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = t[key];
+            });
 
-            document.getElementById('optAllStatuses').innerText = t.allStatuses;
-            document.getElementById('optPending').innerText = t.pending;
-            document.getElementById('optAccepted').innerText = t.accepted;
-            document.getElementById('optRejected').innerText = t.rejected;
-
-            // CMS text block translations
-            document.getElementById('txtCmsTitle').innerText = t.cmsTitle;
-            document.getElementById('txtCmsDesc').innerText = t.cmsDesc;
-            document.getElementById('lblContentKey').innerText = t.lblKey;
-            document.getElementById('lblContentRu').innerText = t.lblRu;
-            document.getElementById('lblContentDe').innerText = t.lblDe;
-            document.getElementById('lblContentEn').innerText = t.lblEn;
-            document.getElementById('btnSaveText').innerText = t.btnSave;
-            document.getElementById('btnResetText').innerText = t.btnReset;
             buildTextSelector();
-
             updateServicesDropdown(lang);
 
             if (allBookings.length > 0) {
                 filterTable();
             }
+            if (currentUser && currentUser.role === 'admin') {
+                renderUsers();
+                renderAuditLog();
+            }
         }
 
-        function getTranslatedService(serviceName, lang) {
-            if (!serviceName) return '';
-            const found = servicesMapping.find(s => s.keys.includes(serviceName) || s.de === serviceName || s.en === serviceName || s.ru === serviceName);
-            if (found) {
-                return found[lang] || found.de;
-            }
-            return serviceName;
+        function adminLang() {
+            return localStorage.getItem('kinderwoow_admin_lang') || 'en';
+        }
+
+        function adminT() {
+            return translations[adminLang()] || translations.en;
+        }
+
+        function fill(template, values) {
+            return template.replace(/\{(\w+)\}/g, (match, name) => values[name] ?? match);
+        }
+
+        function formatDateTime(value) {
+            if (!value) return '';
+            return new Date(value).toLocaleString(DATE_LOCALES[adminLang()] || 'en-GB', {
+                timeZone: BUSINESS_TIMEZONE, dateStyle: 'short', timeStyle: 'short'
+            });
+        }
+
+        // Service name in the admin language (bookings store a service code such as "foam")
+        function getTranslatedService(code, lang) {
+            const service = window.SERVICE_OPTIONS.find(s => s.code === code);
+            return service ? currentText(service.textKey, lang) : (code || '');
         }
 
         function updateServicesDropdown(lang) {
             const serviceSelect = document.getElementById('filterService');
             const currentSelectedValue = serviceSelect.value;
-            
-            const t = translations[lang];
-            serviceSelect.innerHTML = `<option value="">${t.allServices}</option>`;
 
-            servicesMapping.forEach(service => {
+            serviceSelect.innerHTML = '';
+            const allOption = document.createElement('option');
+            allOption.value = '';
+            allOption.textContent = translations[lang].allServices;
+            serviceSelect.appendChild(allOption);
+
+            window.SERVICE_OPTIONS.forEach(service => {
                 const option = document.createElement('option');
-                option.value = service.de;
-                option.textContent = service[lang] || service.de;
-                if (service.de === currentSelectedValue) {
-                    option.selected = true;
-                }
+                option.value = service.code;
+                option.textContent = getTranslatedService(service.code, lang);
                 serviceSelect.appendChild(option);
             });
+            serviceSelect.value = currentSelectedValue;
         }
 
-        // Login: the password is checked on the server, which sets an HttpOnly session cookie
+        // Shared handling of admin API calls: returns the JSON result, or null after showing the problem
+        async function apiRequest(url, options = {}) {
+            const response = await fetch(url, {
+                ...options,
+                headers: options.body ? { 'Content-Type': 'application/json' } : undefined
+            });
+            if (response.status === 401) {
+                showLogin();
+                return null;
+            }
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                alert(adminT().errorPrefix + (result.error || `HTTP ${response.status}`));
+                return null;
+            }
+            return result;
+        }
+
+        // Login: username and password are checked on the server, which sets an HttpOnly session cookie
         async function handleLogin(event) {
             event.preventDefault();
+            const username = document.getElementById('adminUsername').value;
             const password = document.getElementById('adminPassword').value;
 
             try {
                 const response = await fetch('/api/admin/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
+                    body: JSON.stringify({ username, password })
                 });
 
                 const result = await response.json().catch(() => ({}));
@@ -382,7 +537,7 @@
                 if (response.ok && result.success) {
                     document.getElementById('loginError').classList.add('hidden');
                     document.getElementById('adminPassword').value = '';
-                    showDashboard();
+                    showDashboard(result.user);
                 } else {
                     document.getElementById('loginError').classList.remove('hidden');
                 }
@@ -392,20 +547,31 @@
             }
         }
 
-        function showDashboard() {
+        function showDashboard(user) {
+            currentUser = user;
+            document.getElementById('currentUserName').innerText = user.username;
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
-            
-            const savedLang = localStorage.getItem('kinderwoow_admin_lang') || 'en';
+
+            const isAdmin = user.role === 'admin';
+            document.getElementById('usersSection').classList.toggle('hidden', !isAdmin);
+            document.getElementById('auditSection').classList.toggle('hidden', !isAdmin);
+
+            const savedLang = adminLang();
             document.getElementById('langSelector').value = savedLang;
             changeLanguage(savedLang);
 
             fetchBookings();
             fetchSiteContent();
+            if (isAdmin) {
+                fetchUsers();
+                fetchAuditLog();
+            }
         }
 
         // Session expired or missing: go back to the login screen
         function showLogin() {
+            currentUser = null;
             document.getElementById('dashboardSection').classList.add('hidden');
             document.getElementById('loginSection').classList.remove('hidden');
         }
@@ -421,13 +587,9 @@
         // Fetch all booking requests from backend
         async function fetchBookings() {
             try {
-                const response = await fetch('/api/bookings');
-                if (response.status === 401) {
-                    showLogin();
-                    return;
-                }
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                allBookings = await response.json();
+                const result = await apiRequest('/api/bookings');
+                if (!result) return;
+                allBookings = result;
                 filterTable();
             } catch (error) {
                 console.error('Error fetching bookings:', error);
@@ -436,27 +598,21 @@
         }
 
         // ---- CMS text editor ----
-        // Texts saved in the admin panel: { key: { ru, de, en } }
+        // Texts saved in the admin panel: { key: { ru, de, en, updated_by, updated_at } }
         let savedContent = {};
 
         // Groups for the text dropdown, by key prefix
         const TEXT_GROUPS = [
+            { prefixes: ['meta_'], name: { ru: 'SEO (заголовок и описание для Google)', de: 'SEO (Titel & Beschreibung für Google)', en: 'SEO (title & description for Google)' } },
             { prefixes: ['nav_', 'cta_'], name: { ru: 'Меню', de: 'Menü', en: 'Menu' } },
             { prefixes: ['hero_', 'badge_', 'btn_services', 'btn_contact'], name: { ru: 'Главный экран', de: 'Startbereich', en: 'Hero section' } },
             { prefixes: ['cat_'], name: { ru: 'Категории', de: 'Kategorien', en: 'Categories' } },
             { prefixes: ['gallery_', 'show_'], name: { ru: 'Галерея / шоу', de: 'Galerie / Shows', en: 'Gallery / shows' } },
             { prefixes: ['form_', 'lbl_', 'ph_', 'opt_', 'btn_submit', 'msg_'], name: { ru: 'Форма заявки', de: 'Buchungsformular', en: 'Booking form' } },
+            { prefixes: ['contact_'], name: { ru: 'Контакты (адрес, телефон, e-mail)', de: 'Kontakt (Adresse, Telefon, E-Mail)', en: 'Contact (address, phone, e-mail)' } },
             { prefixes: ['footer_'], name: { ru: 'Футер', de: 'Footer', en: 'Footer' } },
         ];
         const OTHER_GROUP = { ru: 'Другое', de: 'Sonstiges', en: 'Other' };
-
-        function adminLang() {
-            return localStorage.getItem('kinderwoow_admin_lang') || 'en';
-        }
-
-        function adminT() {
-            return translations[adminLang()] || translations.en;
-        }
 
         // Current text for a key: the saved CMS text, or the website default
         function currentText(key, lang) {
@@ -490,7 +646,7 @@
                     const option = document.createElement('option');
                     option.value = key;
                     const edited = savedContent[key] ? '✏️ ' : '';
-                    option.textContent = edited + shorten(currentText(key, lang));
+                    option.textContent = edited + (shorten(currentText(key, lang)) || key);
                     optgroup.appendChild(option);
                 });
                 select.appendChild(optgroup);
@@ -519,17 +675,25 @@
         function updateTextStatus() {
             const key = document.getElementById('contentKey').value;
             const t = adminT();
-            document.getElementById('txtContentStatus').innerText = savedContent[key] ? t.statusEdited : t.statusDefault;
+            const saved = savedContent[key];
+            let status = t.statusDefault;
+            if (saved) {
+                status = saved.updated_by
+                    ? fill(t.statusEditedBy, { user: saved.updated_by, date: formatDateTime(saved.updated_at) })
+                    : t.statusEdited;
+            }
+            document.getElementById('txtContentStatus').innerText = status;
         }
 
         async function fetchSiteContent() {
             try {
-                const response = await fetch('/api/content');
-                if (response.ok) savedContent = await response.json();
+                const result = await apiRequest('/api/admin/content');
+                if (result) savedContent = result;
             } catch (error) {
                 console.error('Error loading site texts:', error);
             }
             buildTextSelector();
+            updateServicesDropdown(adminLang());
         }
 
         // Save updated site content via CMS API
@@ -543,23 +707,15 @@
             };
 
             try {
-                const response = await fetch('/api/admin/content', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (response.status === 401) {
-                    showLogin();
-                    return;
-                }
-                const result = await response.json().catch(() => ({}));
-                if (result.success) {
-                    savedContent[payload.key] = { ru: payload.ru, de: payload.de, en: payload.en };
-                    buildTextSelector();
-                    alert(adminT().savedOk);
-                } else {
-                    alert('❌ Save error: ' + (result.error || 'unknown'));
-                }
+                const result = await apiRequest('/api/admin/content', { method: 'POST', body: JSON.stringify(payload) });
+                if (!result) return;
+                savedContent[payload.key] = {
+                    ru: payload.ru, de: payload.de, en: payload.en,
+                    updated_by: result.updated_by, updated_at: result.updated_at
+                };
+                buildTextSelector();
+                if (currentUser.role === 'admin') fetchAuditLog();
+                alert(adminT().savedOk);
             } catch (error) {
                 console.error('Network error:', error);
                 alert('Connection to server failed.');
@@ -576,20 +732,10 @@
 
             const filtered = allBookings.filter(booking => {
                 const bookingStatus = (booking.status || 'pending').toLowerCase().trim();
-                
+
                 const matchClient = (booking.name || '').toLowerCase().includes(fClient);
                 const matchPhone = (booking.phone || '').toLowerCase().includes(fPhone);
-                
-                let matchService = true;
-                if (fService !== "") {
-                    const mappedService = servicesMapping.find(s => s.de === fService);
-                    if (mappedService) {
-                        matchService = mappedService.keys.includes(booking.service) || booking.service === mappedService.de;
-                    } else {
-                        matchService = (booking.service || '') === fService;
-                    }
-                }
-                
+                const matchService = fService === "" || booking.service === fService;
                 const matchStatus = fStatus === "" || bookingStatus === fStatus;
 
                 let matchDate = true;
@@ -608,9 +754,11 @@
             const tbody = document.getElementById('bookingsTableBody');
             const emptyState = document.getElementById('emptyState');
             const totalBadge = document.getElementById('totalBadge');
-            
+            const currentLang = adminLang();
+            const t = translations[currentLang];
+
             tbody.innerHTML = '';
-            totalBadge.innerText = `Total: ${bookings.length}`;
+            totalBadge.innerText = `${t.total}: ${bookings.length}`;
 
             if (!bookings || bookings.length === 0) {
                 emptyState.classList.remove('hidden');
@@ -618,9 +766,6 @@
             }
 
             emptyState.classList.add('hidden');
-
-            const currentLang = localStorage.getItem('kinderwoow_admin_lang') || 'en';
-            const t = translations[currentLang];
 
             bookings.forEach(booking => {
                 const tr = document.createElement('tr');
@@ -631,8 +776,12 @@
                 }
 
                 const translatedServiceName = getTranslatedService(booking.service, currentLang);
+                const changedBy = booking.status_updated_by
+                    ? `<div class="text-[10px] text-gray-500 mt-1">${escapeHtml(t.changedBy)} ${escapeHtml(booking.status_updated_by)}, ${escapeHtml(formatDateTime(booking.status_updated_at))}</div>`
+                    : '';
 
                 tr.innerHTML = `
+                    <td class="p-4 text-xs text-gray-400 whitespace-nowrap">${escapeHtml(formatDateTime(booking.created_at))}</td>
                     <td class="p-4 font-bold text-white">${escapeHtml(booking.name)}</td>
                     <td class="p-4 text-pink-400 font-semibold">${escapeHtml(booking.phone)}</td>
                     <td class="p-4"><span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full font-bold border border-pink-500/30">${escapeHtml(translatedServiceName)}</span></td>
@@ -644,6 +793,7 @@
                             <option value="accepted" ${booking.status === 'accepted' ? 'selected' : ''}>${t.accepted}</option>
                             <option value="rejected" ${booking.status === 'rejected' ? 'selected' : ''}>${t.rejected}</option>
                         </select>
+                        ${changedBy}
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -652,28 +802,188 @@
 
         async function updateStatus(id, newStatus) {
             try {
-                const response = await fetch(`/api/bookings/${id}/status`, {
+                const result = await apiRequest(`/api/bookings/${id}/status`, {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: newStatus })
                 });
-
-                if (response.ok) {
-                    const target = allBookings.find(b => b.id === id);
-                    if (target) {
-                        target.status = newStatus;
-                        target.is_read = true;
-                    }
-                    filterTable();
-                } else if (response.status === 401) {
-                    showLogin();
-                } else {
-                    alert('Failed to update status.');
+                if (!result) {
+                    filterTable(); // put the select back to the saved status
+                    return;
                 }
+                const target = allBookings.find(b => b.id === id);
+                if (target) {
+                    target.status = newStatus;
+                    target.is_read = true;
+                    target.status_updated_by = result.status_updated_by;
+                    target.status_updated_at = result.status_updated_at;
+                }
+                filterTable();
+                if (currentUser.role === 'admin') fetchAuditLog();
             } catch (error) {
                 console.error('Error updating status:', error);
                 alert('Failed to update status.');
             }
+        }
+
+        // ---- My account ----
+        async function changeOwnPassword(event) {
+            event.preventDefault();
+            const payload = {
+                currentPassword: document.getElementById('currentPassword').value,
+                newPassword: document.getElementById('newPassword').value
+            };
+            try {
+                const result = await apiRequest('/api/admin/password', { method: 'POST', body: JSON.stringify(payload) });
+                if (!result) return;
+                event.target.reset();
+                alert(adminT().passwordChanged);
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('Connection to server failed.');
+            }
+        }
+
+        // ---- Users (administrators only) ----
+        let allUsers = [];
+
+        async function fetchUsers() {
+            try {
+                const result = await apiRequest('/api/admin/users');
+                if (!result) return;
+                allUsers = result;
+                renderUsers();
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        function roleLabel(role) {
+            const t = adminT();
+            return role === 'admin' ? t.roleAdmin : t.roleStaff;
+        }
+
+        function renderUsers() {
+            const t = adminT();
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+            allUsers.forEach(user => {
+                const isMe = currentUser && user.username === currentUser.username;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-white">${escapeHtml(user.username)}${isMe ? ` <span class="text-xs text-gray-500">(${escapeHtml(t.you)})</span>` : ''}</td>
+                    <td class="p-3 text-xs">${escapeHtml(roleLabel(user.role))}</td>
+                    <td class="p-3 text-xs text-gray-400">${escapeHtml(user.last_login_at ? formatDateTime(user.last_login_at) : t.never)}</td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <button onclick="resetUserPassword(${user.id})" class="text-xs font-bold bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition">${escapeHtml(t.resetPassword)}</button>
+                        ${isMe ? '' : `<button onclick="deleteUser(${user.id})" class="text-xs font-bold bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 px-3 py-1.5 rounded-lg transition ml-2">${escapeHtml(t.deleteUser)}</button>`}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function createUser(event) {
+            event.preventDefault();
+            const payload = {
+                username: document.getElementById('newUsername').value.trim(),
+                password: document.getElementById('newUserPassword').value,
+                role: document.getElementById('newUserRole').value
+            };
+            try {
+                const result = await apiRequest('/api/admin/users', { method: 'POST', body: JSON.stringify(payload) });
+                if (!result) return;
+                event.target.reset();
+                alert(adminT().userCreated);
+                fetchUsers();
+                fetchAuditLog();
+            } catch (error) {
+                console.error('Error creating user:', error);
+                alert('Connection to server failed.');
+            }
+        }
+
+        async function resetUserPassword(id) {
+            const user = allUsers.find(u => u.id === id);
+            if (!user) return;
+            const password = prompt(fill(adminT().resetPasswordPrompt, { user: user.username }));
+            if (!password) return;
+            try {
+                const result = await apiRequest(`/api/admin/users/${id}/password`, { method: 'PATCH', body: JSON.stringify({ password }) });
+                if (!result) return;
+                alert(adminT().passwordReset);
+                fetchAuditLog();
+            } catch (error) {
+                console.error('Error resetting password:', error);
+                alert('Connection to server failed.');
+            }
+        }
+
+        async function deleteUser(id) {
+            const user = allUsers.find(u => u.id === id);
+            if (!user || !confirm(fill(adminT().confirmDeleteUser, { user: user.username }))) return;
+            try {
+                const result = await apiRequest(`/api/admin/users/${id}`, { method: 'DELETE' });
+                if (!result) return;
+                fetchUsers();
+                fetchAuditLog();
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                alert('Connection to server failed.');
+            }
+        }
+
+        // ---- Activity log (administrators only) ----
+        let auditEntries = [];
+
+        async function fetchAuditLog() {
+            try {
+                const result = await apiRequest('/api/admin/audit');
+                if (!result) return;
+                auditEntries = result;
+                renderAuditLog();
+            } catch (error) {
+                console.error('Error loading activity log:', error);
+            }
+        }
+
+        function statusLabel(status) {
+            return adminT()[status] || status;
+        }
+
+        // Human-readable description of one log entry (plain text, escaped when rendered)
+        function describeAction(entry) {
+            const t = adminT();
+            const d = entry.details || {};
+            switch (entry.action) {
+                case 'login': return t.actLogin;
+                case 'login_failed': return `${t.actLoginFailed} (${d.username || ''})`;
+                case 'logout': return t.actLogout;
+                case 'booking_status': return `${t.actBookingStatus} #${d.id} ${d.name || ''}: ${statusLabel(d.from)} → ${statusLabel(d.to)}`;
+                case 'booking_delete': return `${t.actBookingDelete} #${d.id} ${d.name || ''} (${getTranslatedService(d.service, adminLang())}, ${d.date || ''})`;
+                case 'content_update': {
+                    const after = d.after || {};
+                    return `${t.actContent}: ${d.key} → "${shorten(after[adminLang()] || after.de || '', 80)}"`;
+                }
+                case 'password_change': return t.actPasswordChange;
+                case 'user_create': return `${t.actUserCreate} ${d.username} (${roleLabel(d.role)})`;
+                case 'user_delete': return `${t.actUserDelete} ${d.username}`;
+                case 'user_password_reset': return `${t.actUserPasswordReset} ${d.username}`;
+                default: return entry.action;
+            }
+        }
+
+        function renderAuditLog() {
+            const tbody = document.getElementById('auditTableBody');
+            tbody.innerHTML = '';
+            auditEntries.forEach(entry => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 whitespace-nowrap text-gray-400">${escapeHtml(formatDateTime(entry.created_at))}</td>
+                    <td class="p-3 font-bold text-white">${escapeHtml(entry.username || '—')}</td>
+                    <td class="p-3">${escapeHtml(describeAction(entry))}</td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
         function escapeHtml(text) {
@@ -688,9 +998,14 @@
 
         // Check authentication on page load (asks the server, not sessionStorage)
         document.addEventListener('DOMContentLoaded', async () => {
+            changeLanguage(adminLang());
+            document.getElementById('langSelector').value = adminLang();
             try {
                 const response = await fetch('/api/admin/session');
-                if (response.ok) showDashboard();
+                if (response.ok) {
+                    const result = await response.json();
+                    showDashboard(result.user);
+                }
             } catch (error) {
                 console.error('Session check failed:', error);
             }
