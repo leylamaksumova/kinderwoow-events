@@ -25,6 +25,9 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const GMAIL_USER = process.env.GMAIL_USER;
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
+// Resend (https://resend.com) sends e-mail over HTTPS, for hosts that block SMTP ports (e.g. DigitalOcean)
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const MAIL_FROM = process.env.MAIL_FROM || 'KinderWoow Website <onboarding@resend.dev>';
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || GMAIL_USER;
 // Public address of the website, used for canonical / hreflang links and the sitemap
 const SITE_URL = (process.env.SITE_URL || '').replace(/\/+$/, '');
@@ -180,16 +183,37 @@ async function getSiteContent() {
     return contentCache;
 }
 
-// --- EMAIL (Nodemailer) ---
-const transporter = GMAIL_USER && GMAIL_APP_PASSWORD
+// --- EMAIL (Resend over HTTPS, or Gmail SMTP via Nodemailer) ---
+const transporter = !RESEND_API_KEY && GMAIL_USER && GMAIL_APP_PASSWORD
     ? nodemailer.createTransport({
         service: 'gmail',
         auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
     })
     : null;
 
-if (!transporter) {
-    console.warn('⚠️  GMAIL_USER / GMAIL_APP_PASSWORD not set, email notifications are disabled.');
+if (RESEND_API_KEY && !NOTIFY_EMAIL) {
+    console.warn('⚠️  RESEND_API_KEY is set but NOTIFY_EMAIL is not, email notifications are disabled.');
+} else if (!RESEND_API_KEY && !transporter) {
+    console.warn('⚠️  Neither RESEND_API_KEY nor GMAIL_USER / GMAIL_APP_PASSWORD is set, email notifications are disabled.');
+}
+
+async function sendMail({ subject, html }) {
+    if (RESEND_API_KEY) {
+        if (!NOTIFY_EMAIL) return false;
+        const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ from: MAIL_FROM, to: [NOTIFY_EMAIL], subject, html }),
+            signal: AbortSignal.timeout(15000),
+        });
+        if (!response.ok) {
+            throw new Error(`Resend responded with HTTP ${response.status}: ${await response.text()}`);
+        }
+        return true;
+    }
+    if (!transporter) return false;
+    await transporter.sendMail({ from: `"KinderWoow Website" <${GMAIL_USER}>`, to: NOTIFY_EMAIL, subject, html });
+    return true;
 }
 
 // Escape user input before putting it into HTML (prevents HTML injection / phishing links in emails)
@@ -204,12 +228,8 @@ function escapeHtml(value) {
 
 // Helper function to send email notifications for new bookings
 async function sendEmailNotification(booking) {
-    if (!transporter) return;
-
     const service = serviceLabel(booking.service, 'de');
-    const mailOptions = {
-        from: `"KinderWoow Website" <${GMAIL_USER}>`,
-        to: NOTIFY_EMAIL,
+    const mail = {
         subject: `🎉 New Event Booking: ${service}`,
         html: `
             <h2>New Booking from KinderWoow Website!</h2>
@@ -224,8 +244,7 @@ async function sendEmailNotification(booking) {
     };
 
     try {
-        await transporter.sendMail(mailOptions);
-        console.log('📧 Email notification sent successfully!');
+        if (await sendMail(mail)) console.log('📧 Email notification sent successfully!');
     } catch (error) {
         console.error('❌ Failed to send email notification:', error);
     }

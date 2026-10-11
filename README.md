@@ -55,9 +55,11 @@ npm run build:css
 | `ADMIN_USERNAME` | no | Username of the first admin account (default `admin`) |
 | `ADMIN_PASSWORD` | first start | Password of the first admin account (only used while there are no admin users) |
 | `SESSION_SECRET` | yes | Long random string used to sign admin sessions |
-| `GMAIL_USER` | no | Gmail address that sends notifications |
+| `RESEND_API_KEY` | no | [Resend](https://resend.com) API key: sends notifications over HTTPS (use this on DigitalOcean, which blocks SMTP) |
+| `MAIL_FROM` | no | Sender for Resend (default `KinderWoow Website <onboarding@resend.dev>`) |
+| `GMAIL_USER` | no | Gmail address that sends notifications (used when `RESEND_API_KEY` is not set) |
 | `GMAIL_APP_PASSWORD` | no | Gmail App Password (emails are disabled if missing) |
-| `NOTIFY_EMAIL` | no | Recipient of notifications (defaults to `GMAIL_USER`) |
+| `NOTIFY_EMAIL` | no | Recipient of notifications (defaults to `GMAIL_USER`; required with Resend) |
 | `SITE_URL` | recommended | Public address of the site, e.g. `https://kinderwoow.de` (used for canonical links and the sitemap) |
 | `BUSINESS_TIMEZONE` | no | Timezone for "today" when checking booking dates (default `Europe/Berlin`) |
 | `NODE_ENV` | no | Set to `production` on the live server |

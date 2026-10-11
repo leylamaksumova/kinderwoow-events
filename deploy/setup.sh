@@ -95,7 +95,11 @@ BUSINESS_TIMEZONE=Europe/Berlin
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-# Booking notification e-mails (optional): remove the "#" and fill in
+# Booking notification e-mails (optional): remove the "#" and fill in.
+# DigitalOcean blocks SMTP (Gmail), so use Resend: API key from https://resend.com/api-keys
+#RESEND_API_KEY=re_xxxxxxxx
+#NOTIFY_EMAIL=your-resend-account-address@gmail.com
+# Or Gmail, on hosts that allow SMTP:
 #GMAIL_USER=your-address@gmail.com
 #GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
 #NOTIFY_EMAIL=your-address@gmail.com
