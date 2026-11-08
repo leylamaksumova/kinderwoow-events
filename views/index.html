@@ -264,6 +264,76 @@
     </div>
   </section>
 
+  <!-- MASCOTS SECTION (texts: masc_* in site-texts.js, videos in public/videos) -->
+  <section id="maskottchen" class="masc-section scroll-mt-32 border-t border-white/5">
+    <div class="kwp-wrap">
+      <div class="kwp-head">
+        <h2 class="kwp-title" data-i18n="masc_title">Unsere Maskottchen</h2>
+        <p class="kwp-sub" data-i18n="masc_subtitle">Lieblingshelden zum Anfassen! Schauen Sie sich die Videos an und wählen Sie den Stargast für Ihre Party.</p>
+      </div>
+
+      <div class="masc-grid">
+        <article class="masc-card">
+          <div class="masc-media">
+            <video class="masc-video" src="/videos/mascot-minni.mp4" poster="/videos/mascot-minni.jpg" controls playsinline preload="none"></video>
+            <button type="button" class="masc-play" aria-label="Play">▶</button>
+          </div>
+          <div class="masc-body">
+            <h3 class="masc-name" data-i18n="masc_minni_name">Minni</h3>
+            <p class="masc-desc" data-i18n="masc_minni_desc">Die süße Maus im Punktekleid</p>
+            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+          </div>
+        </article>
+        <article class="masc-card">
+          <div class="masc-media">
+            <video class="masc-video" src="/videos/mascot-mino.mp4" poster="/videos/mascot-mino.jpg" controls playsinline preload="none"></video>
+            <button type="button" class="masc-play" aria-label="Play">▶</button>
+          </div>
+          <div class="masc-body">
+            <h3 class="masc-name" data-i18n="masc_mino_name">Mino</h3>
+            <p class="masc-desc" data-i18n="masc_mino_desc">Der gelbe Spaßvogel in Latzhose</p>
+            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+          </div>
+        </article>
+        <article class="masc-card">
+          <div class="masc-media">
+            <video class="masc-video" src="/videos/mascot-soni.mp4" poster="/videos/mascot-soni.jpg" controls playsinline preload="none"></video>
+            <button type="button" class="masc-play" aria-label="Play">▶</button>
+          </div>
+          <div class="masc-body">
+            <h3 class="masc-name" data-i18n="masc_soni_name">Soni</h3>
+            <p class="masc-desc" data-i18n="masc_soni_desc">Der blaue Blitz – schnell und cool</p>
+            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+          </div>
+        </article>
+        <article class="masc-card">
+          <div class="masc-media">
+            <video class="masc-video" src="/videos/mascot-stichi.mp4" poster="/videos/mascot-stichi.jpg" controls playsinline preload="none"></video>
+            <button type="button" class="masc-play" aria-label="Play">▶</button>
+          </div>
+          <div class="masc-body">
+            <h3 class="masc-name" data-i18n="masc_stichi_name">Stichi</h3>
+            <p class="masc-desc" data-i18n="masc_stichi_desc">Der freche blaue Knuddel-Alien</p>
+            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+          </div>
+        </article>
+        <article class="masc-card">
+          <div class="masc-media">
+            <video class="masc-video" src="/videos/mascot-einhorn.mp4" poster="/videos/mascot-einhorn.jpg" controls playsinline preload="none"></video>
+            <button type="button" class="masc-play" aria-label="Play">▶</button>
+          </div>
+          <div class="masc-body">
+            <h3 class="masc-name" data-i18n="masc_einhorn_name">Einhorn</h3>
+            <p class="masc-desc" data-i18n="masc_einhorn_desc">Das zauberhafte Regenbogen-Einhorn</p>
+            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+          </div>
+        </article>
+      </div>
+
+      <p class="masc-more" data-i18n="masc_more">Weitere Maskottchen auf Anfrage – fragen Sie uns einfach!</p>
+    </div>
+  </section>
+
   <!-- BIRTHDAY PACKAGES SECTION (texts: pkg_* in site-texts.js, editable in the admin panel) -->
   <section id="pakete" class="kwp-section scroll-mt-32 border-t border-white/5">
     <div class="kwp-wrap">
@@ -514,17 +584,38 @@
       });
     });
 
-    // "Request" buttons in the packages section: pick "Kindergeburtstag" and name the package in the message
+    // "Request" buttons in the packages and mascots sections: pick the service and name the choice in the message
+    function prefillBooking(service, choice) {
+      const message = document.getElementById('message');
+      document.getElementById('service').value = service;
+      if (!message.value.trim() || message.dataset.prefill === message.value) {
+        message.value = choice;
+        message.dataset.prefill = choice;
+      }
+    }
     document.querySelectorAll('[data-package]').forEach(function(button) {
       button.addEventListener('click', function() {
-        const packageName = button.closest('.kwp-card').querySelector('.kwp-name').textContent.trim();
-        const message = document.getElementById('message');
-        document.getElementById('service').value = 'birthday';
-        if (!message.value.trim() || message.dataset.package === message.value) {
-          message.value = packageName;
-          message.dataset.package = packageName;
-        }
+        prefillBooking('birthday', button.closest('.kwp-card').querySelector('.kwp-name').textContent.trim());
       });
+    });
+    document.querySelectorAll('[data-request-service]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        prefillBooking(button.dataset.requestService, button.closest('.masc-card').querySelector('.masc-name').textContent.trim());
+      });
+    });
+
+    // Mascot videos: big play button, and only one video plays at a time
+    document.querySelectorAll('.masc-media').forEach(function(media) {
+      const video = media.querySelector('video');
+      media.querySelector('.masc-play').addEventListener('click', function() { video.play(); });
+      video.addEventListener('play', function() {
+        media.classList.add('is-playing');
+        document.querySelectorAll('.masc-video').forEach(function(other) {
+          if (other !== video) other.pause();
+        });
+      });
+      video.addEventListener('pause', function() { media.classList.remove('is-playing'); });
+      video.addEventListener('ended', function() { media.classList.remove('is-playing'); });
     });
 
     function toggleLangDropdown() {
