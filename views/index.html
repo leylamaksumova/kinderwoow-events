@@ -341,20 +341,15 @@
         </div>
 
         <!-- 7. Mascots & Characters -->
-        <div id="gallery-mascot" class="flip-card scroll-mt-32" data-flip role="button" tabindex="0" aria-pressed="false">
+        <div id="gallery-mascot" class="flip-card scroll-mt-32" data-open-mascots role="button" tabindex="0" aria-haspopup="dialog">
           <div class="flip-inner">
             <div class="flip-face flip-front group">
               <img src="/images/mascot.webp" alt="Maskottchen" data-i18n-alt="show_mascot_title" width="1200" height="1200" loading="lazy" decoding="async" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
               <div class="p-4 bg-slate-900/90 backdrop-blur-md border-t border-white/10 flex-1">
-                <h3 class="font-black text-lg text-red-500" data-i18n="show_mascot_title">MASCOTTCHEN & HELDEN</h3>
+                <h3 class="font-black text-lg text-red-500" data-i18n="show_mascot_title">MASKOTTCHEN & HELDEN</h3>
                 <p class="text-xs text-gray-300 mt-1" data-i18n="show_mascot_desc">Lieblingshelden & Maskottchen-Shows.</p>
-                <span class="inline-block mt-2 text-xs font-bold text-pink-400 group-hover:text-pink-300 transition" data-i18n="det_more">Mehr erfahren ↻</span>
+                <span class="inline-block mt-2 text-xs font-bold text-pink-400 group-hover:text-pink-300 transition" data-i18n="masc_open">Alle Maskottchen ansehen →</span>
               </div>
-            </div>
-            <div class="flip-face flip-back">
-              <h3 class="flip-title text-red-500" data-i18n="show_mascot_title">MASCOTTCHEN &amp; HELDEN</h3>
-              <p class="flip-text" data-i18n="det_mascot_text">Minni, Mino, Soni, Stichi, Winni, Einhorn und das Weihnachts-Rentier besuchen Ihre Party! Kuscheln, tanzen, Fotos machen – die Kinder werden begeistert sein.</p>
-              <a href="#maskottchen" class="flip-btn" data-i18n="det_mascot_btn">Videos ansehen</a>
             </div>
           </div>
         </div>
@@ -388,97 +383,102 @@
     </div>
   </section>
 
-  <!-- MASCOTS SECTION (texts: masc_* in site-texts.js, videos in public/videos) -->
-  <section id="maskottchen" class="masc-section scroll-mt-32 border-t border-white/5">
-    <div class="kwp-wrap">
-      <div class="kwp-head">
-        <h2 class="kwp-title" data-i18n="masc_title">Unsere Maskottchen</h2>
-        <p class="kwp-sub" data-i18n="masc_subtitle">Lieblingshelden zum Anfassen! Schauen Sie sich die Videos an und wählen Sie den Stargast für Ihre Party.</p>
-      </div>
-
-      <div class="masc-grid">
-        <article class="masc-card">
-          <div class="masc-media">
-            <video class="masc-video" src="/videos/mascot-minni.mp4" poster="/videos/mascot-minni.jpg" controls playsinline preload="none"></video>
-            <button type="button" class="masc-play" aria-label="Play">▶</button>
-          </div>
-          <div class="masc-body">
-            <h3 class="masc-name" data-i18n="masc_minni_name">Minni</h3>
-            <p class="masc-desc" data-i18n="masc_minni_desc">Die süße Maus im Punktekleid</p>
-            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
-          </div>
-        </article>
-        <article class="masc-card">
-          <div class="masc-media">
-            <video class="masc-video" src="/videos/mascot-mino.mp4" poster="/videos/mascot-mino.jpg" controls playsinline preload="none"></video>
-            <button type="button" class="masc-play" aria-label="Play">▶</button>
-          </div>
-          <div class="masc-body">
-            <h3 class="masc-name" data-i18n="masc_mino_name">Mino</h3>
-            <p class="masc-desc" data-i18n="masc_mino_desc">Der gelbe Spaßvogel in Latzhose</p>
-            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
-          </div>
-        </article>
-        <article class="masc-card">
-          <div class="masc-media">
-            <video class="masc-video" src="/videos/mascot-soni.mp4" poster="/videos/mascot-soni.jpg" controls playsinline preload="none"></video>
-            <button type="button" class="masc-play" aria-label="Play">▶</button>
-          </div>
-          <div class="masc-body">
-            <h3 class="masc-name" data-i18n="masc_soni_name">Soni</h3>
-            <p class="masc-desc" data-i18n="masc_soni_desc">Der blaue Blitz – schnell und cool</p>
-            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
-          </div>
-        </article>
-        <article class="masc-card">
-          <div class="masc-media">
-            <video class="masc-video" src="/videos/mascot-stichi.mp4" poster="/videos/mascot-stichi.jpg" controls playsinline preload="none"></video>
-            <button type="button" class="masc-play" aria-label="Play">▶</button>
-          </div>
-          <div class="masc-body">
-            <h3 class="masc-name" data-i18n="masc_stichi_name">Stichi</h3>
-            <p class="masc-desc" data-i18n="masc_stichi_desc">Der freche blaue Knuddel-Alien</p>
-            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
-          </div>
-        </article>
-        <article class="masc-card">
-          <div class="masc-media">
-            <video class="masc-video" src="/videos/mascot-einhorn.mp4" poster="/videos/mascot-einhorn.jpg" controls playsinline preload="none"></video>
-            <button type="button" class="masc-play" aria-label="Play">▶</button>
-          </div>
-          <div class="masc-body">
-            <h3 class="masc-name" data-i18n="masc_einhorn_name">Einhorn</h3>
-            <p class="masc-desc" data-i18n="masc_einhorn_desc">Das zauberhafte Regenbogen-Einhorn</p>
-            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
-          </div>
-        </article>
-        <article class="masc-card">
-          <div class="masc-media">
-            <video class="masc-video" src="/videos/mascot-winni.mp4" poster="/videos/mascot-winni.jpg" controls playsinline preload="none"></video>
-            <button type="button" class="masc-play" aria-label="Play">▶</button>
-          </div>
-          <div class="masc-body">
-            <h3 class="masc-name" data-i18n="masc_winni_name">Winni</h3>
-            <p class="masc-desc" data-i18n="masc_winni_desc">Der gemütliche Honigbär im roten Shirt</p>
-            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
-          </div>
-        </article>
-        <article class="masc-card">
-          <div class="masc-media">
-            <video class="masc-video" src="/videos/mascot-rentier.mp4" poster="/videos/mascot-rentier.jpg" controls playsinline preload="none"></video>
-            <button type="button" class="masc-play" aria-label="Play">▶</button>
-          </div>
-          <div class="masc-body">
-            <h3 class="masc-name" data-i18n="masc_rentier_name">Weihnachts-Rentier</h3>
-            <p class="masc-desc" data-i18n="masc_rentier_desc">Besucht Sie in der Weihnachtszeit zu Hause</p>
-            <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
-          </div>
-        </article>
-      </div>
-
-      <p class="masc-more" data-i18n="masc_more">Weitere Maskottchen auf Anfrage – fragen Sie uns einfach!</p>
+  <!-- MASCOTS WINDOW (opened from the gallery card and the menu; texts: masc_* in site-texts.js, videos in public/videos) -->
+  <dialog id="maskottchen" class="masc-dialog" aria-labelledby="maskottchenTitle">
+    <div class="masc-close-bar">
+      <button type="button" class="masc-close" data-close-mascots><span aria-hidden="true">✕</span><span class="sr-only" data-i18n="masc_close">Schließen</span></button>
     </div>
-  </section>
+    <div class="masc-section">
+      <div class="kwp-wrap">
+        <div class="kwp-head">
+          <h2 id="maskottchenTitle" class="kwp-title" data-i18n="masc_title">Unsere Maskottchen</h2>
+          <p class="kwp-sub" data-i18n="masc_subtitle">Lieblingshelden zum Anfassen! Schauen Sie sich die Videos an und wählen Sie den Stargast für Ihre Party.</p>
+        </div>
+
+        <div class="masc-grid">
+          <article class="masc-card">
+            <div class="masc-media">
+              <video class="masc-video" src="/videos/mascot-minni.mp4" poster="/videos/mascot-minni.jpg" controls playsinline preload="none"></video>
+              <button type="button" class="masc-play" aria-label="Play">▶</button>
+            </div>
+            <div class="masc-body">
+              <h3 class="masc-name" data-i18n="masc_minni_name">Minni</h3>
+              <p class="masc-desc" data-i18n="masc_minni_desc">Die süße Maus im Punktekleid</p>
+              <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+            </div>
+          </article>
+          <article class="masc-card">
+            <div class="masc-media">
+              <video class="masc-video" src="/videos/mascot-mino.mp4" poster="/videos/mascot-mino.jpg" controls playsinline preload="none"></video>
+              <button type="button" class="masc-play" aria-label="Play">▶</button>
+            </div>
+            <div class="masc-body">
+              <h3 class="masc-name" data-i18n="masc_mino_name">Mino</h3>
+              <p class="masc-desc" data-i18n="masc_mino_desc">Der gelbe Spaßvogel in Latzhose</p>
+              <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+            </div>
+          </article>
+          <article class="masc-card">
+            <div class="masc-media">
+              <video class="masc-video" src="/videos/mascot-soni.mp4" poster="/videos/mascot-soni.jpg" controls playsinline preload="none"></video>
+              <button type="button" class="masc-play" aria-label="Play">▶</button>
+            </div>
+            <div class="masc-body">
+              <h3 class="masc-name" data-i18n="masc_soni_name">Soni</h3>
+              <p class="masc-desc" data-i18n="masc_soni_desc">Der blaue Blitz – schnell und cool</p>
+              <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+            </div>
+          </article>
+          <article class="masc-card">
+            <div class="masc-media">
+              <video class="masc-video" src="/videos/mascot-stichi.mp4" poster="/videos/mascot-stichi.jpg" controls playsinline preload="none"></video>
+              <button type="button" class="masc-play" aria-label="Play">▶</button>
+            </div>
+            <div class="masc-body">
+              <h3 class="masc-name" data-i18n="masc_stichi_name">Stichi</h3>
+              <p class="masc-desc" data-i18n="masc_stichi_desc">Der freche blaue Knuddel-Alien</p>
+              <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+            </div>
+          </article>
+          <article class="masc-card">
+            <div class="masc-media">
+              <video class="masc-video" src="/videos/mascot-einhorn.mp4" poster="/videos/mascot-einhorn.jpg" controls playsinline preload="none"></video>
+              <button type="button" class="masc-play" aria-label="Play">▶</button>
+            </div>
+            <div class="masc-body">
+              <h3 class="masc-name" data-i18n="masc_einhorn_name">Einhorn</h3>
+              <p class="masc-desc" data-i18n="masc_einhorn_desc">Das zauberhafte Regenbogen-Einhorn</p>
+              <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+            </div>
+          </article>
+          <article class="masc-card">
+            <div class="masc-media">
+              <video class="masc-video" src="/videos/mascot-winni.mp4" poster="/videos/mascot-winni.jpg" controls playsinline preload="none"></video>
+              <button type="button" class="masc-play" aria-label="Play">▶</button>
+            </div>
+            <div class="masc-body">
+              <h3 class="masc-name" data-i18n="masc_winni_name">Winni</h3>
+              <p class="masc-desc" data-i18n="masc_winni_desc">Der gemütliche Honigbär im roten Shirt</p>
+              <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+            </div>
+          </article>
+          <article class="masc-card">
+            <div class="masc-media">
+              <video class="masc-video" src="/videos/mascot-rentier.mp4" poster="/videos/mascot-rentier.jpg" controls playsinline preload="none"></video>
+              <button type="button" class="masc-play" aria-label="Play">▶</button>
+            </div>
+            <div class="masc-body">
+              <h3 class="masc-name" data-i18n="masc_rentier_name">Weihnachts-Rentier</h3>
+              <p class="masc-desc" data-i18n="masc_rentier_desc">Besucht Sie in der Weihnachtszeit zu Hause</p>
+              <a href="#booking" class="masc-btn" data-request-service="mascot" data-i18n="masc_btn">Anfragen</a>
+            </div>
+          </article>
+        </div>
+
+        <p class="masc-more" data-i18n="masc_more">Weitere Maskottchen auf Anfrage – fragen Sie uns einfach!</p>
+      </div>
+    </div>
+  </dialog>
 
   <!-- BIRTHDAY PACKAGES SECTION (texts: pkg_* in site-texts.js, editable in the admin panel) -->
   <section id="pakete" class="kwp-section scroll-mt-32 border-t border-white/5">
@@ -773,6 +773,37 @@
       button.addEventListener('click', function() {
         document.getElementById('service').value = button.dataset.flipRequest;
       });
+    });
+
+    // Mascots window: opened by the gallery card, the menu links and a #maskottchen address
+    const mascotDialog = document.getElementById('maskottchen');
+    function openMascots() {
+      if (!mascotDialog.open) mascotDialog.showModal();
+    }
+    const mascotCard = document.querySelector('[data-open-mascots]');
+    mascotCard.addEventListener('click', openMascots);
+    mascotCard.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openMascots();
+      }
+    });
+    document.querySelectorAll('a[href="#maskottchen"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        openMascots();
+      });
+    });
+    if (location.hash === '#maskottchen') openMascots();
+    mascotDialog.querySelector('[data-close-mascots]').addEventListener('click', function() { mascotDialog.close(); });
+    mascotDialog.addEventListener('click', function(e) {
+      if (e.target === mascotDialog) mascotDialog.close(); // click on the dark background
+    });
+    mascotDialog.addEventListener('close', function() {
+      mascotDialog.querySelectorAll('video').forEach(function(video) { video.pause(); });
+    });
+    mascotDialog.querySelectorAll('.masc-btn').forEach(function(button) {
+      button.addEventListener('click', function() { mascotDialog.close(); });
     });
 
     // Mascot videos: big play button, and only one video plays at a time

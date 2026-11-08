@@ -85,9 +85,25 @@
   }
   .kwp-note strong { color: var(--kwp-yellow); }
   /* Mascots section (#maskottchen), reuses .kwp-wrap / .kwp-head / .kwp-title / .kwp-sub */
+  .masc-dialog {
+    width: min(1180px, calc(100vw - 24px)); max-width: none; max-height: calc(100vh - 32px); padding: 0; overflow: auto;
+    border: 1px solid #2a2b4a; border-radius: 24px; background: #080615; color: #e8e8f3;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .6); overscroll-behavior: contain;
+  }
+  .masc-dialog::backdrop { background: rgba(5, 4, 15, .8); backdrop-filter: blur(4px); }
+  .masc-close-bar { position: sticky; top: 0; z-index: 5; height: 0; display: flex; justify-content: flex-end; }
+  .masc-close {
+    margin: 12px 12px 0 0; width: 44px; height: 44px; border-radius: 999px; border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    background: rgba(12, 10, 29, .85); color: #fff; font-size: 18px; box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
+  }
+  .masc-close:hover { background: #e11d77; }
   .masc-section {
     --kwp-yellow: #fbbf24; --kwp-pink: #ec4899; --kwp-muted: #a3a4c0;
-    background: #080615; color: #e8e8f3; padding: 64px 20px 72px;
+    color: #e8e8f3; padding: 48px 28px 40px;
+  }
+  @media (max-width: 700px) {
+    .masc-dialog { width: 100vw; height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0; }
   }
   .masc-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
   .masc-card {
@@ -127,7 +143,7 @@
   .masc-more { margin: 32px auto 0; text-align: center; color: #fbbf24; font-weight: 600; font-size: 15.5px; }
   @media (max-width: 1100px) { .masc-card { flex-basis: calc((100% - 40px) / 3); } }
   @media (max-width: 700px) {
-    .masc-section { padding: 48px 16px 56px; }
+    .masc-section { padding: 56px 14px 32px; }
     .masc-grid { gap: 14px; }
     .masc-card { flex-basis: calc((100% - 14px) / 2); }
     .masc-name { font-size: 18px; }
@@ -148,7 +164,7 @@
     background: linear-gradient(160deg, #1b1640, #12132b 60%); border-color: rgba(236, 72, 153, .5);
   }
   .flip-card.is-flipped .flip-inner { transform: rotateY(180deg); }
-  @media (hover: hover) { .flip-card:hover .flip-inner { transform: rotateY(180deg); } }
+  @media (hover: hover) { .flip-card[data-flip]:hover .flip-inner { transform: rotateY(180deg); } }
   .flip-card:focus-visible .flip-face { border-color: #ec4899; }
   .flip-title { margin: 0 0 8px; font-size: 18px; font-weight: 900; text-transform: uppercase; }
   .flip-text { margin: 0 0 12px; color: #d4d5ea; font-size: 13.5px; line-height: 1.5; }
