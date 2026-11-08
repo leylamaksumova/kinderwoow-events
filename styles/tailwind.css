@@ -89,8 +89,9 @@
     --kwp-yellow: #fbbf24; --kwp-pink: #ec4899; --kwp-muted: #a3a4c0;
     background: #080615; color: #e8e8f3; padding: 64px 20px 72px;
   }
-  .masc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .masc-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
   .masc-card {
+    flex: 0 0 calc((100% - 60px) / 4);
     display: flex; flex-direction: column; overflow: hidden;
     background: #12132b; border: 1px solid #2a2b4a; border-radius: 22px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
@@ -124,10 +125,11 @@
   }
   .masc-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
   .masc-more { margin: 32px auto 0; text-align: center; color: #fbbf24; font-weight: 600; font-size: 15.5px; }
-  @media (max-width: 1100px) { .masc-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 1100px) { .masc-card { flex-basis: calc((100% - 40px) / 3); } }
   @media (max-width: 700px) {
     .masc-section { padding: 48px 16px 56px; }
-    .masc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .masc-grid { gap: 14px; }
+    .masc-card { flex-basis: calc((100% - 14px) / 2); }
     .masc-name { font-size: 18px; }
     .masc-desc { font-size: 13px; }
   }
