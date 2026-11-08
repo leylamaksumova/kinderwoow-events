@@ -89,8 +89,9 @@
     --kwp-yellow: #fbbf24; --kwp-pink: #ec4899; --kwp-muted: #a3a4c0;
     background: #080615; color: #e8e8f3; padding: 64px 20px 72px;
   }
-  .masc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .masc-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
   .masc-card {
+    flex: 0 0 calc((100% - 60px) / 4);
     display: flex; flex-direction: column; overflow: hidden;
     background: #12132b; border: 1px solid #2a2b4a; border-radius: 22px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
@@ -124,51 +125,44 @@
   }
   .masc-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
   .masc-more { margin: 32px auto 0; text-align: center; color: #fbbf24; font-weight: 600; font-size: 15.5px; }
-  @media (max-width: 1100px) { .masc-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 1100px) { .masc-card { flex-basis: calc((100% - 40px) / 3); } }
   @media (max-width: 700px) {
     .masc-section { padding: 48px 16px 56px; }
-    .masc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .masc-grid { gap: 14px; }
+    .masc-card { flex-basis: calc((100% - 14px) / 2); }
     .masc-name { font-size: 18px; }
     .masc-desc { font-size: 13px; }
   }
 
-  /* Service details window (opened from the gallery cards) */
-  .svc-dialog {
-    width: min(560px, calc(100vw - 24px)); max-height: calc(100vh - 32px); padding: 0; overflow: auto;
-    border: 1px solid #2a2b4a; border-radius: 24px; background: #12132b; color: #e8e8f3;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+  /* Gallery flip cards: photo on the front, details on the back */
+  .flip-card { perspective: 1400px; cursor: pointer; outline: none; }
+  .flip-inner { display: grid; height: 100%; transition: transform .6s cubic-bezier(.4, .2, .2, 1); transform-style: preserve-3d; }
+  .flip-face {
+    grid-area: 1 / 1; display: flex; flex-direction: column; overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .1); border-radius: 1rem;
+    -webkit-backface-visibility: hidden; backface-visibility: hidden;
   }
-  .svc-dialog::backdrop { background: rgba(5, 4, 15, .75); backdrop-filter: blur(4px); }
-  .svc-img { display: block; width: 100%; height: 260px; object-fit: cover; }
-  .svc-body { padding: 22px 24px 24px; }
-  .svc-title {
-    margin: 0 0 10px; font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: .3px;
-    background: linear-gradient(90deg, #fbbf24, #ec4899);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+  .flip-front { background: rgba(255, 255, 255, .05); }
+  .flip-back {
+    transform: rotateY(180deg); padding: 20px 18px 18px;
+    background: linear-gradient(160deg, #1b1640, #12132b 60%); border-color: rgba(236, 72, 153, .5);
   }
-  .svc-text p { margin: 0; color: #c9cae0; font-size: 15.5px; line-height: 1.6; }
-  .svc-included { margin: 18px 0 10px; font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #fbbf24; }
-  .svc-list ul { list-style: none; margin: 0 0 22px; padding: 0; }
-  .svc-list li { position: relative; padding: 0 0 9px 26px; font-size: 15px; line-height: 1.45; }
-  .svc-list li::before { content: "★"; position: absolute; left: 0; top: 0; color: #fbbf24; }
-  .svc-btn {
-    display: block; text-align: center; padding: 14px 20px; border-radius: 999px; color: #fff;
-    font-size: 15px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
-    background: linear-gradient(90deg, #e11d77, #f43f8d); box-shadow: 0 8px 24px rgba(225, 29, 119, .4);
-    transition: transform .2s ease, filter .2s ease;
+  .flip-card.is-flipped .flip-inner { transform: rotateY(180deg); }
+  @media (hover: hover) { .flip-card:hover .flip-inner { transform: rotateY(180deg); } }
+  .flip-card:focus-visible .flip-face { border-color: #ec4899; }
+  .flip-title { margin: 0 0 8px; font-size: 18px; font-weight: 900; text-transform: uppercase; }
+  .flip-text { margin: 0 0 12px; color: #d4d5ea; font-size: 13.5px; line-height: 1.5; }
+  .flip-list { list-style: none; margin: 0 0 14px; padding: 0; flex: 1; }
+  .flip-list li { position: relative; padding: 0 0 6px 20px; font-size: 13px; line-height: 1.4; color: #e8e8f3; }
+  .flip-list li::before { content: "★"; position: absolute; left: 0; top: 0; color: #fbbf24; font-size: 12px; }
+  .flip-btn {
+    display: block; margin-top: auto; text-align: center; padding: 11px 16px; border-radius: 999px; color: #fff;
+    font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
+    background: linear-gradient(90deg, #e11d77, #f43f8d); box-shadow: 0 8px 24px rgba(225, 29, 119, .35);
+    transition: filter .2s ease;
   }
-  .svc-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
-  .svc-close {
-    position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 999px; border: 0;
-    display: flex; align-items: center; justify-content: center; cursor: pointer;
-    background: rgba(12, 10, 29, .75); color: #fff; font-size: 18px; backdrop-filter: blur(6px);
-  }
-  .svc-close:hover { background: #e11d77; }
-  @media (max-width: 500px) {
-    .svc-img { height: 200px; }
-    .svc-body { padding: 18px 18px 20px; }
-    .svc-title { font-size: 22px; }
-  }
+  .flip-btn:hover { filter: brightness(1.1); }
+  @media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }
 
   @media (max-width: 980px) {
     .kwp-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; gap: 22px; }
